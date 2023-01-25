@@ -1,5 +1,3 @@
-# CEN3031-SKJSports
-
 # Project Name: SKJSports
 
 # Project Description: 
