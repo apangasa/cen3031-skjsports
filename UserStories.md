@@ -1,15 +1,15 @@
-As a reader, I want to be able to use a navigation bar, so that I can navigate between different sections on the blog.
-As a reader, I want the ability to view the homepage, so that I can go back to the homepage whenever I please. 
-As a reader, I want the ability to open articles, so that I can read them.
-As a reader, I want the ability to search for articles, so that I can find and read them.
-As a reader, I want the ability to subscribe to the blog, so that I can get emails about new articles. 
-As a reader, I want to be able to hover over a player’s name and see statistics about that player, so that I can be better informed while reading an article. 
-As a reader, I want to be able to hover over a team’s name and see statistics about that team, so that I can be better informed while reading an article. 
-As a reader, I want the ability to comment on articles, so that I can share my thoughts about various articles.
-As a writer, I want to be able to create and save drafts, so that I can write articles and keep saved copies of my work.
-As a writer, I want to be able to publish drafts, so that readers can view my articles. 
-As a writer, I want to be able to edit published articles, so that I can go back and fix any mistakes after publication. 
-As a writer, I want to be able to feature certain articles, so that I can push these articles to the top of my blog. 
-As an administrator, I want the ability to be able to organize the navigation bar, so that I can keep the blog updated.
-As an administrator, I want the ability to manage (add/remove) writers to the blog, so that the website can gain more writers.
-As an administrator, I want to ask potential writers for their email, so that they can sign up as a writer for the blog. 
+- As a reader, I want to be able to use a navigation bar, so that I can navigate between different sections on the blog.
+- As a reader, I want the ability to view the homepage, so that I can go back to the homepage whenever I please. 
+- As a reader, I want the ability to open articles, so that I can read them.
+- As a reader, I want the ability to search for articles, so that I can find and read them.
+- As a reader, I want the ability to subscribe to the blog, so that I can get emails about new articles. 
+- As a reader, I want to be able to hover over a player’s name and see statistics about that player, so that I can be better informed while reading an article. 
+- As a reader, I want to be able to hover over a team’s name and see statistics about that team, so that I can be better informed while reading an article. 
+- As a reader, I want the ability to comment on articles, so that I can share my thoughts about various articles.
+- As a writer, I want to be able to create and save drafts, so that I can write articles and keep saved copies of my work.
+- As a writer, I want to be able to publish drafts, so that readers can view my articles. 
+- As a writer, I want to be able to edit published articles, so that I can go back and fix any mistakes after publication. 
+- As a writer, I want to be able to feature certain articles, so that I can push these articles to the top of my blog. 
+- As an administrator, I want the ability to be able to organize the navigation bar, so that I can keep the blog updated.
+- As an administrator, I want the ability to manage (add/remove) writers to the blog, so that the website can gain more writers.
+- As an administrator, I want to ask potential writers for their email, so that they can sign up as a writer for the blog. 
