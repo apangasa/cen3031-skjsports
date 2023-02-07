@@ -1,4 +1,4 @@
-- User Stories: https://github.com/apangasa/cen3031-skjsports/blob/58be17d867587c787018ff78ab049fa2bdd77be8/UserStories.md 
-- Issues:
-- Which issues were successfully completed?
-- Which issues didn't get completed and why?
+- **User Stories**: https://github.com/apangasa/cen3031-skjsports/blob/58be17d867587c787018ff78ab049fa2bdd77be8/UserStories.md 
+- **Issues**:
+- **Which issues were successfully completed?**
+- **Which issues didn't get completed and why?**
