@@ -20,3 +20,7 @@ On the backend side, we planned to create a mock Go server with a default GET ro
 [i7]: https://github.com/apangasa/cen3031-skjsports/issues/7
 [i8]: https://github.com/apangasa/cen3031-skjsports/issues/8
 [i9]: https://github.com/apangasa/cen3031-skjsports/issues/9
+
+## Issues Completed
+
+## Issues Not Completed and Why
