@@ -8,6 +8,8 @@ import (
 
 func default_route(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
+		fmt.Println("New GET request received.")
+		retrieveArticle()
 		fmt.Fprintf(w, "Success!")
 	} else {
 		fmt.Fprintf(w, "Unsupported request type.")
