@@ -1,12 +1,12 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"regexp"
 	"strings"
-	"encoding/json"
 )
 
 type JsonMap map[string]interface{}
@@ -29,8 +29,8 @@ func article_retrieval(w http.ResponseWriter, r *http.Request) {
 
 		id := r.URL.Query().Get("id")
 		article := retrieveArticle(id)
-		
-		re := regexp.MustCompile("<image [\w]+>")
+
+		re := regexp.MustCompile(`<image [\w]+>`)
 		//content := re.Split(article.Content, -1)
 		content := article.Content
 
@@ -51,7 +51,7 @@ func article_retrieval(w http.ResponseWriter, r *http.Request) {
 				contentMap["text"] = text
 				contentList = append(contentList, contentMap)
 			}
-			
+
 			imageString := content[nextImageStart:nextImageEnd]
 			imageID := strings.Split(strings.Split(imageString, "<image ")[0], ">")[0]
 
@@ -62,13 +62,19 @@ func article_retrieval(w http.ResponseWriter, r *http.Request) {
 
 			j = nextImageEnd
 		}
-		
-		res := JsonMap {
-			"title": article.Title,
+
+		res := JsonMap{
+			"title":   article.Title,
 			"content": contentList,
 		}
 
+		fmt.Println(contentList)
+
 		jsonRes, err := json.Marshal(res)
+
+		if err != nil {
+			log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+		}
 
 		w.Write(jsonRes)
 	} else {
@@ -77,7 +83,7 @@ func article_retrieval(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", default_route)
+	// http.HandleFunc("/", default_route)
 	http.HandleFunc("/article", article_retrieval)
 
 	fmt.Printf("Starting server at port 8080\n")
