@@ -90,7 +90,7 @@ func article_retrieval(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	// http.HandleFunc("/", default_route)
+	http.HandleFunc("/", default_route)
 	http.HandleFunc("/article", article_retrieval)
 
 	fmt.Printf("Starting server at port 8080\n")
