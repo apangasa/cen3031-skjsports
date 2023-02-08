@@ -53,7 +53,8 @@ func article_retrieval(w http.ResponseWriter, r *http.Request) {
 			}
 
 			imageString := content[nextImageStart:nextImageEnd]
-			imageID := strings.Split(strings.Split(imageString, "<image ")[0], ">")[0]
+
+			imageID := strings.Split(strings.Split(imageString, "<image ")[1], ">")[0]
 
 			contentMap := make(map[string]string)
 			contentMap["contentType"] = "img"
