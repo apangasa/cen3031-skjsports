@@ -63,6 +63,13 @@ func article_retrieval(w http.ResponseWriter, r *http.Request) {
 			j = nextImageEnd
 		}
 
+		text := content[j:]
+
+		contentMap := make(map[string]string)
+		contentMap["contentType"] = "text"
+		contentMap["text"] = text
+		contentList = append(contentList, contentMap)
+
 		res := JsonMap{
 			"title":   article.Title,
 			"content": contentList,
