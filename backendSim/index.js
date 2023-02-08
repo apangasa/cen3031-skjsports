@@ -31,18 +31,18 @@ app.get('/article/:articleID', (req, res)=>{
             list: [
                 {
                     id: '1',
-                    type: "img",
+                    contentType: "img",
                 },
                 {
-                    type: 'text',
+                    contentType: 'text',
                     text: "Some random text from article 1 part 1.",
                 },
                 {
-                    type: 'img',
+                    contentType: 'img',
                     id: "2",
                 },
                 {
-                    type: 'text',
+                    contentType: 'text',
                     text: "Some random text from article 1 part 2.",
                 }
             ]
