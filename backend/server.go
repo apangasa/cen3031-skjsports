@@ -76,7 +76,7 @@ func article_retrieval(w http.ResponseWriter, r *http.Request) {
 			"content": contentList,
 		}
 
-		fmt.Println(contentList)
+		// fmt.Println(contentList)
 
 		jsonRes, err := json.Marshal(res)
 
