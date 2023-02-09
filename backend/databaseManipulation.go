@@ -28,7 +28,7 @@ func retrieveArticle(article_id string) Article {
 	return article
 }
 
-func searchArticle(search string) Article {
+func searchArticle(search string) []Article {
 	var articles []Article
 
 	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
@@ -38,9 +38,8 @@ func searchArticle(search string) Article {
 	}
 
 	//db.First(&articles, "title = ?", search)
-	db.Raw("SELECT id, title FROM articles WHERE CONTAINS(title, " + search + ")").Scan(&articles)
+	db.Raw("SELECT id, title FROM articles WHERE title LIKE '%" + search + "%'").Scan(&articles)
 
 	return articles
-
 
 }

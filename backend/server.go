@@ -98,8 +98,8 @@ func article_search(w http.ResponseWriter, r *http.Request) {
 
 		search := r.URL.Query().Get("search")
 		articles := searchArticle(search)
-		resultsList = []
-		
+
+		var resultsList []map[string]string
 
 		for i := 0; i < len(articles); i++ {
 			titleMap := make(map[string]string)
@@ -108,8 +108,8 @@ func article_search(w http.ResponseWriter, r *http.Request) {
 			resultsList = append(resultsList, titleMap)
 		}
 
-		res := JsonMap {
-			"results": resultsList
+		res := JsonMap{
+			"results": resultsList,
 		}
 
 		jsonRes, err := json.Marshal(res)
@@ -120,9 +120,7 @@ func article_search(w http.ResponseWriter, r *http.Request) {
 
 		w.Write(jsonRes)
 
-	}
-
-	else {
+	} else {
 		fmt.Fprintf(w, "Unsupported request type.")
 	}
 }
