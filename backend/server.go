@@ -89,9 +89,47 @@ func article_retrieval(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func article_search(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		fmt.Println("New GET request received for article search.")
+
+		w.Header().Set("Content-Type", "application/json")
+
+		search := r.URL.Query().Get("search")
+		articles := searchArticle(search)
+		resultsList = []
+		
+
+		for i := 0; i < len(articles); i++ {
+			titleMap := make(map[string]string)
+			titleMap["id"] = articles[i].ID
+			titleMap["title"] = articles[i].Title
+			resultsList = append(resultsList, titleMap)
+		}
+
+		res := JsonMap {
+			"results": resultsList
+		}
+
+		jsonRes, err := json.Marshal(res)
+
+		if err != nil {
+			log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+		}
+
+		w.Write(jsonRes)
+
+	}
+
+	else {
+		fmt.Fprintf(w, "Unsupported request type.")
+	}
+}
+
 func main() {
 	http.HandleFunc("/", default_route)
 	http.HandleFunc("/article", article_retrieval)
+	http.HandleFunc("/search", article_search)
 
 	fmt.Printf("Starting server at port 8080\n")
 	if err := http.ListenAndServe(":8080", nil); err != nil {

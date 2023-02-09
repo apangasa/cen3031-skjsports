@@ -27,3 +27,20 @@ func retrieveArticle(article_id string) Article {
 
 	return article
 }
+
+func searchArticle(search string) Article {
+	var articles []Article
+
+	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	//db.First(&articles, "title = ?", search)
+	db.Raw("SELECT id, title FROM articles WHERE CONTAINS(title, " + search + ")").Scan(&articles)
+
+	return articles
+
+
+}
