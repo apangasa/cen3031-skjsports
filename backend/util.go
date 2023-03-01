@@ -7,7 +7,18 @@ import (
 
 type JsonMap map[string]interface{}
 
-func processArticle(articleObj Article) JsonMap {
+func getArticleContentsByID(id string) JsonMap {
+	articleObj := retrieveArticle(id) // Get struct of Article by querying DB
+
+	if articleObj == nil {
+		return nil
+	}
+
+	result := processArticle(articleObj) // Dissect article into text and image content list
+	return result
+}
+
+func processArticle(articleObj *Article) JsonMap {
 	re := regexp.MustCompile(`<image [\w]+>`)
 	content := articleObj.Content
 

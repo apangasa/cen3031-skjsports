@@ -27,19 +27,24 @@ func get_article(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		w.Header().Set("Content-Type", "application/json")
 
-		id := r.URL.Query().Get("id")        // Access query param
-		articleObj := retrieveArticle(id)    // Get struct of Article by querying DB
-		result := processArticle(articleObj) // Dissect article into text and image content list
-		jsonRes, err := json.Marshal(result)
+		id := r.URL.Query().Get("id") // Access query param
+		result := getArticleContentsByID(id)
 
-		if err != nil {
-			log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+		if result == nil {
+			w.WriteHeader(http.StatusNotFound)
+		} else {
+			jsonRes, err := json.Marshal(result)
+
+			if err != nil {
+				log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+			}
+
+			w.WriteHeader(http.StatusOK)
+			w.Write(jsonRes)
 		}
-
-		w.WriteHeader(http.StatusOK)
-		w.Write(jsonRes)
 	} else {
 		fmt.Fprintf(w, "Unsupported request type.")
+		w.WriteHeader(http.StatusMethodNotAllowed)
 	}
 }
 

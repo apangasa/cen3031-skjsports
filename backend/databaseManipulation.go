@@ -13,17 +13,20 @@ type Article struct {
 	TestEntry int
 }
 
-func retrieveArticle(article_id string) Article {
-	var article Article
+func retrieveArticle(article_id string) *Article {
+	article := new(Article)
 
 	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
-	// db, err := gorm.Open("sqlite3", "./skjsports.db")
 
 	if err != nil {
 		panic("failed to connect database")
 	}
 
-	db.First(&article, "id = ?", article_id)
+	result := db.First(&article, "id = ?", article_id)
+
+	if result.Error == gorm.ErrRecordNotFound {
+		return nil // if record not found
+	}
 
 	return article
 }
