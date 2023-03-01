@@ -9,7 +9,7 @@ function Article(props) {
         articleID = articleID.articleID
     }
     useEffect(() => {
-            fetch('http://localhost:5001/article/' + articleID)
+            fetch('http://localhost:8080/article/' + articleID)
                 .then(response => response.json())
                 .then(result => setData(result.list))
         },[])
@@ -17,7 +17,7 @@ function Article(props) {
     console.log(data)
     for (let i in data) {
         if (data[i].contentType == 'img') {
-            output.push(<img src={'http://localhost:5001/image/'+data[i].id} />)
+            output.push(<img src={'http://localhost:8080/image/'+data[i].id} />)
         }
         else {
             output.push(<p>{data[i].text}</p>)
