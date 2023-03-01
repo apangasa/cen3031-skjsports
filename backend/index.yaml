@@ -1,0 +1,136 @@
+openapi: "3.0.0"
+info:
+    version: "1.0.0"
+    title: "SKJSports API"
+    description: Backend for SKJSports blog
+servers:
+    - url: http://localhost:8080
+      description: Local testing server
+paths:
+    /article:
+        parameters:
+            - name: id
+              description: The unique identifier of the article
+              in: query
+              required: true
+              schema:
+                  $ref: "#/components/schemas/ArticleId"
+        get:
+            summary: Retrieve an article's contents, including text and image IDs, by the article's ID
+            responses:
+                "200":
+                    description: The article corresponding to the provided `articleId`
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Article"
+                404:
+                    description: No article found for the provided `articleId`
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                500:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+    /search:
+        parameters:
+            - name: search
+              description: The search term that the user has typed in the search bar
+              in: query
+              required: true
+              schema:
+                  $ref: "#/components/schemas/SearchTerm"
+        get:
+            summary: Retrieve a list of articles whose titles include the search term
+            responses:
+                "200":
+                    description: The articles that include `search` in their titles
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/SearchResults"
+                500:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+components:
+    schemas:
+        ArticleId:
+            description: The unique identifier of a article
+            type: string
+            example: "tK6c9Q"
+        SearchTerm:
+            description: A user's search term
+            type: string
+            example: "Chelsea"
+        SearchResults:
+            type: object
+            required:
+                - results
+            properties:
+                results:
+                    type: array
+                    items:
+                        type: object
+                        required:
+                            - id
+                            - title
+                        properties:
+                            id:
+                                $ref: "#/components/schemas/ArticleId"
+                            title:
+                                type: string
+                                example: "Inter Miami CF vs. Orlando City – Match Review"
+        Article:
+            type: object
+            required:
+                - id
+                - title
+                - content
+            properties:
+                id:
+                    $ref: "#/components/schemas/ArticleId"
+                title:
+                    type: string
+                    example: "Inter Miami CF vs. Orlando City – Match Review"
+                content:
+                    type: array
+                    items:
+                        type: object
+                        required:
+                            - contentType
+                        properties:
+                            contentType:
+                                type: string
+                                description: 'This field takes on the value "text" or "image".'
+                                example: "text"
+                            text:
+                                type: string
+                                description: 'This field only exists if `contentType` is set to "text".'
+                                example: "Moments can define World Cups, and moments can inspire generations. From Pele’s header, to Diego Maradona’s hand, to Roberto Baggio’s miss, to Zinedine Zidane’s headbutt, to Mario Gotze’s volley, and everything in between, the World Cup has long been defined by a series of moments, etched in the annals of soccer history."
+                            imageId:
+                                type: string
+                                description: 'This field only exists if `contentType` is set to "image".'
+                                example: ""
+
+        Error:
+            type: object
+            required:
+                - message
+            properties:
+                message:
+                    description: A human readable error message
+                    type: string
+    # securitySchemes:
+    #     ApiKey:
+    #         type: apiKey
+    #         in: header
+    #         name: X-Api-Key
+# security:
+#     - ApiKey: []
