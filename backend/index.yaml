@@ -5,9 +5,9 @@ info:
     description: Backend for SKJSports blog
 
 paths:
-    /article?id=articleId:
+    /article:
         parameters:
-            - name: articleId
+            - name: id
               description: The unique identifier of the article
               in: query
               required: true
@@ -39,6 +39,7 @@ components:
         ArticleId:
             description: The unique identifier of a article
             type: string
+            example: "tK6c9Q"
         Article:
             type: object
             required:
@@ -50,6 +51,7 @@ components:
                     $ref: "#/components/schemas/ArticleId"
                 title:
                     type: string
+                    example: "Inter Miami CF vs. Orlando City – Match Review"
                 content:
                     type: array
                     items:
@@ -60,12 +62,15 @@ components:
                             contentType:
                                 type: string
                                 description: 'This field takes on the value "text" or "image".'
+                                example: "text"
                             text:
                                 type: string
                                 description: 'This field only exists if `contentType` is set to "text".'
+                                example: "Moments can define World Cups, and moments can inspire generations. From Pele’s header, to Diego Maradona’s hand, to Roberto Baggio’s miss, to Zinedine Zidane’s headbutt, to Mario Gotze’s volley, and everything in between, the World Cup has long been defined by a series of moments, etched in the annals of soccer history."
                             imageId:
                                 type: string
                                 description: 'This field only exists if `contentType` is set to "image".'
+                                example: ""
 
         Error:
             type: object
