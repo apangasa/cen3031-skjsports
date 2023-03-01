@@ -13,12 +13,12 @@ The following unit tests were necessary for backend behavior:
 ## Issues to Address
 On the frontend side
 
-On the backend side, we planned to work with the frontend team to integrate the frontend and backend in the sense that the frontend would be able to request articles by ID and search for articles via search terms ([See issue][i21]). We also planned to create API documentation as a YAML file using the OpenAPI specification ([See issue][i20]). Additionally, we planned to implement and run unit tests using Go's testing package for the article retrieval ([See issue][i22]) and for the article search ([See issue][i23]).
+On the backend side, we planned to work with the frontend team to integrate the frontend and backend in the sense that the frontend would be able to request articles by ID and search for articles via search terms ([See issue][i21]). In order to do this, we also had to enable cross-origin resource sharing on the backend ([See issue][i25]). We also planned to create API documentation as a YAML file using the OpenAPI specification ([See issue][i20]). Additionally, we planned to implement and run unit tests using Go's testing package for the article retrieval ([See issue][i22]) and for the article search ([See issue][i23]).
 
 ## Issues Completed
 On the frontend side
 
-On the backend side, we successfully created OpenAPI documentation for the GET requests that one can make to the backend server ([See issue][i20]). We did so by writing a YAML file in the OpenAPI specification and publishing it as an API Collection via Postman to generate an API guide.
+On the backend side, we successfully created OpenAPI documentation for the GET requests that one can make to the backend server ([See issue][i20]). We did so by writing a YAML file in the OpenAPI specification and publishing it as an API Collection via Postman to generate an API guide. We also enabled CORS on the backend server in order to allow the frontend to successfully make requests and receive responses ([See issue][i25]).
 
 ## Issues Not Completed and Why
 On the frontend side
@@ -42,4 +42,5 @@ On the backend side
 [i21]:https://github.com/apangasa/cen3031-skjsports/issues/21
 [i22]:https://github.com/apangasa/cen3031-skjsports/issues/22 
 [i23]:https://github.com/apangasa/cen3031-skjsports/issues/23 
+[i25]:https://github.com/apangasa/cen3031-skjsports/issues/25 
 
