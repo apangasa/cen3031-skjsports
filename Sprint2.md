@@ -13,7 +13,7 @@ The following unit tests were necessary for backend behavior:
 ## Issues to Address
 On the frontend side
 
-On the backend side, we planned to work with the frontend team to integrate the frontend and backend in the sense that the frontend would be able to request articles by ID and search for articles via search terms ([See issue][i21]). In order to do this, we also had to enable cross-origin resource sharing on the backend ([See issue][i25]). We also planned to create API documentation as a YAML file using the OpenAPI specification ([See issue][i20]). Additionally, we planned to implement and run unit tests using Go's testing package for the article retrieval ([See issue][i22]) and for the article search ([See issue][i23]). Finally, we planned to create a new route on the server that accepts a POST request containing a subscriber information for readers to subscribe to the blog ([See issue])([i32]).
+On the backend side, we planned to work with the frontend team to integrate the frontend and backend in the sense that the frontend would be able to request articles by ID and search for articles via search terms ([See issue][i21]). In order to do this, we also had to enable cross-origin resource sharing on the backend ([See issue][i25]). We also planned to create API documentation as a YAML file using the OpenAPI specification ([See issue][i20]). Additionally, we planned to implement and run unit tests using Go's testing package for the article retrieval ([See issue][i22]) and for the article search ([See issue][i23]). Finally, we planned to create a new route on the server that accepts a POST request containing a subscriber information for readers to subscribe to the blog ([See issue][i32]).
 
 ## Issues Completed
 On the frontend side
