@@ -25,6 +25,8 @@ func article_retrieval(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		fmt.Println("New GET request received for article retrieval.")
 
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		w.Header().Set("Content-Type", "application/json")
 
 		id := r.URL.Query().Get("id")
@@ -94,6 +96,8 @@ func article_search(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		fmt.Println("New GET request received for article search.")
 
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		w.Header().Set("Content-Type", "application/json")
 
 		search := r.URL.Query().Get("search")
