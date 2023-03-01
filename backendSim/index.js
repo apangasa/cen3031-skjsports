@@ -11,12 +11,12 @@ app.get('/articleList', (req, res)=>{
         list: [
             {
                 imageID: '1',
-                title: "sohil is cool",
+                title: "EXAMPLE TITLE - My 2022/2023 Premier League Predictions: ",
                 articleID: '01'
             },
             {
                 imageID: '2',
-                title: "sumeet isn't cool",
+                title: "EXAMPLE TITLE - Who Will Win Super Bowl 57?",
                 articleID: '02'
             }
         ]
@@ -35,7 +35,7 @@ app.get('/article/:articleID', (req, res)=>{
                 },
                 {
                     contentType: 'text',
-                    text: "Some random text from article 1 part 1.",
+                    text: "EXAMPLE TITLE - My 2022/2023 Premier League Predictions: ",
                 },
                 {
                     contentType: 'img',
@@ -43,7 +43,7 @@ app.get('/article/:articleID', (req, res)=>{
                 },
                 {
                     contentType: 'text',
-                    text: "Some random text from article 1 part 2.",
+                    text: "EXAMPLE TITLE - Who Will Win Super Bowl 57?",
                 }
             ]
         });
@@ -57,13 +57,13 @@ app.get('/article/:articleID', (req, res)=>{
 app.get('/image/:imageID', (req, res)=>{
     console.log("request img:" + req.params.imageID)
     res.status(200);
-    res.sendFile('/Users/kolliparas/Documents/GitHub/cen3031-skjsports/backendSim/'+req.params.imageID+'.png')
+    res.sendFile('/Users/sumeetjena/Documents/GitHub/cen3031-skjsports/backendSim/'+req.params.imageID+'.png')
 
 });
 
 app.listen(PORT, (error) =>{
         if(!error)
-            console.log("Server is Successfully Running,and App is listening on port "+ PORT)
+            console.log("Server is Successfully Running, and App is listening on port "+ PORT)
     else
         console.log("Error occurred, server can't start", error);
     }
