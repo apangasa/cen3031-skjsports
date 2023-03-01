@@ -9,7 +9,7 @@ import (
 
 type Slice []interface{}
 
-func default_route(w http.ResponseWriter, r *http.Request) {
+func defaultRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		fmt.Println("New GET request received.")
 		fmt.Fprintf(w, "Success!")
@@ -18,7 +18,7 @@ func default_route(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func get_article(w http.ResponseWriter, r *http.Request) {
+func getArticle(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		fmt.Println("New GET request received for article retrieval.")
 
@@ -27,8 +27,8 @@ func get_article(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		w.Header().Set("Content-Type", "application/json")
 
-		id := r.URL.Query().Get("id") // Access query param
-		result := getArticleContentsByID(id)
+		id := r.URL.Query().Get("id")        // Access query param
+		result := getArticleContentsByID(id) // retrieve article as list of content elements (text/image)
 
 		if result == nil {
 			w.WriteHeader(http.StatusNotFound)
@@ -37,10 +37,12 @@ func get_article(w http.ResponseWriter, r *http.Request) {
 
 			if err != nil {
 				log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+				w.WriteHeader(http.StatusInternalServerError)
+				w.Write(jsonRes)
+			} else {
+				w.WriteHeader(http.StatusOK)
+				w.Write(jsonRes)
 			}
-
-			w.WriteHeader(http.StatusOK)
-			w.Write(jsonRes)
 		}
 	} else {
 		fmt.Fprintf(w, "Unsupported request type.")
@@ -86,8 +88,8 @@ func article_search(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", default_route)
-	http.HandleFunc("/article", get_article)
+	http.HandleFunc("/", defaultRoute)
+	http.HandleFunc("/article", getArticle)
 	http.HandleFunc("/search", article_search)
 
 	fmt.Printf("Starting server at port 8080\n")
