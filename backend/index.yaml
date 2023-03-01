@@ -3,7 +3,9 @@ info:
     version: "1.0.0"
     title: "SKJSports API"
     description: Backend for SKJSports blog
-
+servers:
+    - url: http://localhost:8080
+      description: Local testing server
 paths:
     /article:
         parameters:
@@ -34,12 +36,57 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
+    /search:
+        parameters:
+            - name: search
+              description: The search term that the user has typed in the search bar
+              in: query
+              required: true
+              schema:
+                  $ref: "#/components/schemas/SearchTerm"
+        get:
+            summary: Retrieve a list of articles whose titles include the search term
+            responses:
+                "200":
+                    description: The articles that include `search` in their titles
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/SearchResults"
+                500:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
 components:
     schemas:
         ArticleId:
             description: The unique identifier of a article
             type: string
             example: "tK6c9Q"
+        SearchTerm:
+            description: A user's search term
+            type: string
+            example: "Chelsea"
+        SearchResults:
+            type: object
+            required:
+                - results
+            properties:
+                results:
+                    type: array
+                    items:
+                        type: object
+                        required:
+                            - id
+                            - title
+                        properties:
+                            id:
+                                $ref: "#/components/schemas/ArticleId"
+                            title:
+                                type: string
+                                example: "Inter Miami CF vs. Orlando City – Match Review"
         Article:
             type: object
             required:
