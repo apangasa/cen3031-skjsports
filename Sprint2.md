@@ -9,6 +9,10 @@ The following unit tests were necessary for frontend behavior:
 
 The following unit tests were necessary for backend behavior:
 
+- Retrieving an article with an empty id
+- Retrieving an article with an id that is not in the database
+- Retrieving an article that is in the database and contains only text
+- Retrieving an article that is in the database and contains both text and images
 
 ## Issues to Address
 On the frontend side
@@ -18,12 +22,10 @@ On the backend side, we planned to work with the frontend team to integrate the 
 ## Issues Completed
 On the frontend side
 
-On the backend side, we successfully created OpenAPI documentation for the GET requests that one can make to the backend server ([See issue][i20]). We did so by writing a YAML file in the OpenAPI specification and publishing it as an API Collection via Postman to generate an API guide. We also enabled CORS on the backend server in order to allow the frontend to successfully make requests and receive responses ([See issue][i25]).
+On the backend side, we successfully created OpenAPI documentation for the GET requests that one can make to the backend server ([See issue][i20]). We did so by writing a YAML file in the OpenAPI specification and publishing it as an API Collection via Postman to generate an API guide. We also enabled CORS on the backend server in order to allow the frontend to successfully make requests and receive responses ([See issue][i25]). We did some refactoring of the code and implemented HTTP status codes for various errors, then completed unit testing for article retrieval ([See issue][i22]), and all tests passed successfully. We also implemented the subscribe route that reads subscriber data from the POST request body and sends it to a method that would insert relevant data into the database's Subscribers table ([See issue][i32]).
 
 ## Issues Not Completed and Why
 On the frontend side
-
-On the backend side
 
 
 [i1]: https://github.com/apangasa/cen3031-skjsports/issues/1
