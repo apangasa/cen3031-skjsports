@@ -13,23 +13,39 @@ type Article struct {
 	TestEntry int
 }
 
-func retrieveArticle(article_id string) Article {
-	var article Article
+func retrieveArticle(article_id string) *Article {
+	article := new(Article)
 
 	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
-	// db, err := gorm.Open("sqlite3", "./skjsports.db")
 
 	if err != nil {
 		panic("failed to connect database")
 	}
 
-	db.First(&article, "id = ?", article_id)
+	result := db.First(&article, "id = ?", article_id)
+
+	if result.Error == gorm.ErrRecordNotFound {
+		return nil // if record not found
+	}
 
 	return article
 }
 
 func searchArticle(search string) []Article {
 	var articles []Article
+
+	if search == "" {
+		return nil
+	}
+
+	for i := 0; i < len(search); i++ {
+		if search[i] != ' ' {
+			break
+		}
+		if i == len(search)-1 {
+			return nil
+		}
+	}
 
 	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
 
@@ -42,4 +58,9 @@ func searchArticle(search string) []Article {
 
 	return articles
 
+}
+
+func addSubscriber(email string) {
+	// TODO insert into Subscribers table
+	// consider what attributes should be stored (e.g. first name, last name, email)
 }
