@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -50,6 +51,30 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func subscribe(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		fmt.Println("New POST request received for new subscriber.")
+
+		// Set headers
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Content-Type", "application/json")
+
+		defer r.Body.Close()
+		body, _ := ioutil.ReadAll(r.Body)
+
+		bodyMap := make(map[string]string)
+		json.Unmarshal(body, &bodyMap)
+
+		addSubscriber(bodyMap["email"])
+
+		w.WriteHeader(http.StatusOK) // consider whether the response should vary if the subscriber already exists in the table
+	} else {
+		fmt.Fprintf(w, "Unsupported request type.")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+	}
+}
+
 func article_search(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		fmt.Println("New GET request received for article search.")
@@ -91,6 +116,7 @@ func main() {
 	http.HandleFunc("/", defaultRoute)
 	http.HandleFunc("/article", getArticle)
 	http.HandleFunc("/search", article_search)
+	http.HandleFunc("/subscribe", subscribe)
 
 	fmt.Printf("Starting server at port 8080\n")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
