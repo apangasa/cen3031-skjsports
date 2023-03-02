@@ -27,6 +27,8 @@ On the backend side, we successfully created OpenAPI documentation for the GET r
 ## Issues Not Completed and Why
 On the frontend side
 
+## Backend API Documentation
+https://universal-crater-481750.postman.co/workspace/6185c94f-4893-4149-a166-29e01a85f960/api/e6f0ab7c-013c-4e89-b88e-f9d77a013bf7
 
 [i1]: https://github.com/apangasa/cen3031-skjsports/issues/1
 [i2]: https://github.com/apangasa/cen3031-skjsports/issues/2
