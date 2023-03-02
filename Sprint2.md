@@ -13,6 +13,13 @@ The following unit tests were necessary for backend behavior:
 - Retrieving an article with an id that is not in the database
 - Retrieving an article that is in the database and contains only text
 - Retrieving an article that is in the database and contains both text and images
+- Searching for articles with empty search string
+- Search for a non-existent article
+- Performing a search that retrieves multiple articles
+- Performing a search that retrieves one article
+- Ensuring the search function is not case sensitive
+- Ensuring a search string that is blank returns no articles
+- Ensuring a search string with multiple words still works
 
 ## Issues to Address
 On the frontend side
