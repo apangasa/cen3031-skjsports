@@ -46,3 +46,8 @@ func searchArticle(search string) []Article {
 	return articles
 
 }
+
+func addSubscriber(email string) {
+	// TODO insert into Subscribers table
+	// consider what attributes should be stored (e.g. first name, last name, email)
+}
