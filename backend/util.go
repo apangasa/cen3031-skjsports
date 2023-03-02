@@ -66,3 +66,30 @@ func processArticle(articleObj *Article) JsonMap {
 
 	return res
 }
+
+func getArticleContentsBySearch(search string) JsonMap {
+	articles := searchArticle(search)
+	if articles == nil {
+		return nil
+	}
+
+	res := formatArticles(articles)
+	return res
+}
+
+func formatArticles(articles []Article) JsonMap {
+	var resultsList []map[string]string
+
+	for i := 0; i < len(articles); i++ {
+		titleMap := make(map[string]string)
+		titleMap["id"] = articles[i].ID
+		titleMap["title"] = articles[i].Title
+		resultsList = append(resultsList, titleMap)
+	}
+
+	res := JsonMap{
+		"results": resultsList,
+	}
+
+	return res
+}

@@ -34,6 +34,19 @@ func retrieveArticle(article_id string) *Article {
 func searchArticle(search string) []Article {
 	var articles []Article
 
+	if search == "" {
+		return nil
+	}
+
+	for i := 0; i < len(search); i++ {
+		if search[i] != ' ' {
+			break
+		}
+		if i == len(search)-1 {
+			return nil
+		}
+	}
+
 	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
 
 	if err != nil {

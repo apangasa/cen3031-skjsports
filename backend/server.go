@@ -84,20 +84,7 @@ func article_search(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
 		search := r.URL.Query().Get("search")
-		articles := searchArticle(search)
-
-		var resultsList []map[string]string
-
-		for i := 0; i < len(articles); i++ {
-			titleMap := make(map[string]string)
-			titleMap["id"] = articles[i].ID
-			titleMap["title"] = articles[i].Title
-			resultsList = append(resultsList, titleMap)
-		}
-
-		res := JsonMap{
-			"results": resultsList,
-		}
+		res := getArticleContentsBySearch(search)
 
 		jsonRes, err := json.Marshal(res)
 
