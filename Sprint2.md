@@ -5,12 +5,13 @@
 - As a reader, I want the ability to search for articles, so that I can find and read them.
 
 ## Unit Tests
-The following unit tests were necessary for frontend behavior:  
+The following unit tests were necessary for frontend behavior and are availabe in /frontend/cypress/tests/.  
 
 - Testing the home page
 - Testing the functionality of individual articles
 - Testing the search bar function
 - Identifying a method to handle react-router in Cypress
+
 
 The following unit tests were necessary for backend behavior:
 
