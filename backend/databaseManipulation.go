@@ -13,6 +13,12 @@ type Article struct {
 	TestEntry int
 }
 
+type Subscriber struct {
+	ID        string
+	FirstName string
+	LastName  string
+}
+
 func retrieveArticle(article_id string) *Article {
 	article := new(Article)
 
@@ -47,7 +53,20 @@ func searchArticle(search string) []Article {
 
 }
 
-func addSubscriber(email string) {
-	// TODO insert into Subscribers table
-	// consider what attributes should be stored (e.g. first name, last name, email)
+func addSubscriber(email string, first string, last string) bool {
+	subscriber := Subscriber{email, first, last}
+
+	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	result := db.Create(&subscriber)
+
+	if result.RowsAffected == 0 {
+		return false
+	}
+
+	return true
 }
