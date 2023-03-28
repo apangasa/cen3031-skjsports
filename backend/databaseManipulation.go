@@ -81,7 +81,14 @@ func addSubscriber(email string, first string, last string) bool {
 	if result.RowsAffected != 0 {
 		return true
 	} else {
-		return false
+		result := db.Unscoped().Model(&Subscriber{ID: email}).Where("deleted_at IS NOT NULL").Update("deleted_at", nil)
+
+		if result.RowsAffected != 0 {
+			db.Unscoped().Model(&Subscriber{ID: email}).Updates(Subscriber{FirstName: first, LastName: last})
+			return true
+		} else {
+			return false
+		}
 	}
 }
 
