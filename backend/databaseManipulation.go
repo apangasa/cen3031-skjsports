@@ -14,7 +14,8 @@ type Article struct {
 }
 
 type Subscriber struct {
-	ID        string
+	gorm.Model
+	ID        string `gorm:"primaryKey"`
 	FirstName string
 	LastName  string
 }
@@ -54,7 +55,7 @@ func searchArticle(search string) []Article {
 }
 
 func addSubscriber(email string, first string, last string) bool {
-	subscriber := Subscriber{email, first, last}
+	subscriber := Subscriber{ID: email, FirstName: first, LastName: last}
 
 	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
 
@@ -64,9 +65,26 @@ func addSubscriber(email string, first string, last string) bool {
 
 	result := db.Create(&subscriber)
 
-	if result.RowsAffected == 0 {
+	if result.RowsAffected != 0 {
+		return true
+	} else {
 		return false
 	}
+}
 
-	return true
+func removeSubscriber(email string) bool {
+	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	result := db.Delete(&Subscriber{ID: email})
+	// result := db.Where("id = ?", email).Delete(&Subscriber{})
+
+	if result.RowsAffected != 0 {
+		return true
+	} else {
+		return false
+	}
 }
