@@ -38,7 +38,7 @@ func retrieveArticle(article_id string) *Article {
 	return article
 }
 
-func searchArticle(search string) []Article {
+func searchDatabaseForArticles(search string) []Article {
 	var articles []Article
 
 	if search == "" {

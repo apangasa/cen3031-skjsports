@@ -109,7 +109,7 @@ func unsubscribe(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func article_search(w http.ResponseWriter, r *http.Request) {
+func getSearchResults(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		fmt.Println("New GET request received for article search.")
 
@@ -118,7 +118,7 @@ func article_search(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
 		search := r.URL.Query().Get("search")
-		res := getArticleContentsBySearch(search)
+		res := getArticlesMatchingSearch(search)
 
 		jsonRes, err := json.Marshal(res)
 
@@ -136,7 +136,7 @@ func article_search(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/", defaultRoute)
 	http.HandleFunc("/article", getArticle)
-	http.HandleFunc("/search", article_search)
+	http.HandleFunc("/search", getSearchResults)
 	http.HandleFunc("/subscribe", subscribe)
 	http.HandleFunc("/unsubscribe", unsubscribe)
 

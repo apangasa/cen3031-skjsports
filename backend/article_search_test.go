@@ -6,25 +6,25 @@ import (
 
 func TestNullSearch(t *testing.T) {
 	search := ""
-	contents := getArticleContentsBySearch(search)
+	contents := getArticlesMatchingSearch(search)
 
 	if contents != nil {
-		t.Fatalf(`getArticleContentsBySearch("") = %q, want match for %v`, contents, nil)
+		t.Fatalf(`getArticlesMatchingSearch("") = %q, want match for %v`, contents, nil)
 	}
 }
 
 func TestNonExistentSearch(t *testing.T) {
 	search := "jibberjabberjibberjabber"
-	contents := getArticleContentsBySearch(search)
+	contents := getArticlesMatchingSearch(search)
 
 	if contents != nil {
-		t.Fatalf(`getArticleContentsBySearch("jibberjabberjibberjabber") = %q, want match for %v`, contents, nil)
+		t.Fatalf(`getArticlesMatchingSearch("jibberjabberjibberjabber") = %q, want match for %v`, contents, nil)
 	}
 }
 
 func TestRegularSearchWithMultipleResults(t *testing.T) {
 	search := "biden"
-	contents := getArticleContentsBySearch(search)
+	contents := getArticlesMatchingSearch(search)
 
 	contentList := contents["results"].([]map[string]string)
 
@@ -43,7 +43,7 @@ func TestRegularSearchWithMultipleResults(t *testing.T) {
 
 func TestRegularSearchWithSingleResult(t *testing.T) {
 	search := "COVID"
-	contents := getArticleContentsBySearch(search)
+	contents := getArticlesMatchingSearch(search)
 
 	contentList := contents["results"].([]map[string]string)
 
@@ -54,7 +54,7 @@ func TestRegularSearchWithSingleResult(t *testing.T) {
 
 func TestCaseSensitivity(t *testing.T) {
 	search := "covid"
-	contents := getArticleContentsBySearch(search)
+	contents := getArticlesMatchingSearch(search)
 
 	contentList := contents["results"].([]map[string]string)
 
@@ -65,7 +65,7 @@ func TestCaseSensitivity(t *testing.T) {
 
 func TestBlankSearch(t *testing.T) {
 	search := "    "
-	contents := getArticleContentsBySearch(search)
+	contents := getArticlesMatchingSearch(search)
 
 	if contents != nil {
 		t.Fatalf(`Wasn't expecting any articles to be brought up in the search.`)
@@ -75,7 +75,7 @@ func TestBlankSearch(t *testing.T) {
 func TestMultipleWordSearch(t *testing.T) {
 	search := "Million Americans"
 
-	contents := getArticleContentsBySearch(search)
+	contents := getArticlesMatchingSearch(search)
 
 	contentList := contents["results"].([]map[string]string)
 

@@ -67,8 +67,8 @@ func processArticle(articleObj *Article) JsonMap {
 	return res
 }
 
-func getArticleContentsBySearch(search string) JsonMap {
-	articles := searchArticle(search)
+func getArticlesMatchingSearch(search string) JsonMap {
+	articles := searchDatabaseForArticles(search)
 	if articles == nil {
 		return nil
 	}
