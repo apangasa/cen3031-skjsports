@@ -66,9 +66,14 @@ func subscribe(w http.ResponseWriter, r *http.Request) {
 		bodyMap := make(map[string]string)
 		json.Unmarshal(body, &bodyMap)
 
-		addSubscriber(bodyMap["email"])
+		success := addSubscriber(bodyMap["email"], bodyMap["first_name"], bodyMap["last_name"])
 
-		w.WriteHeader(http.StatusOK) // consider whether the response should vary if the subscriber already exists in the table
+		if success {
+			w.WriteHeader(http.StatusOK)
+		} else {
+			w.WriteHeader(http.StatusNotModified) // subscriber already exists
+		}
+
 	} else {
 		fmt.Fprintf(w, "Unsupported request type.")
 		w.WriteHeader(http.StatusMethodNotAllowed)
