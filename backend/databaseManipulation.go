@@ -108,3 +108,21 @@ func removeSubscriber(email string) bool {
 		return false
 	}
 }
+
+func retrieveSubscriber(email string) *Subscriber {
+	subscriber := new(Subscriber)
+
+	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	result := db.First(&subscriber, "id = ?", email)
+
+	if result.Error == gorm.ErrRecordNotFound {
+		return nil // if record not found
+	}
+
+	return subscriber
+}
