@@ -10,6 +10,28 @@ import (
 	"github.com/gocolly/colly"
 )
 
+func getPlayerStats(player_name string) map[string]string {
+	positions := getPositions(player_name)
+
+	var stats map[string]string
+
+	if strings.Contains(positions, "GK") {
+		stats = getGoalkeeperStats(player_name, stats)
+	}
+
+	if strings.Contains(positions, "DF") {
+		stats = getDefenderStats(player_name, stats)
+	}
+
+	if strings.Contains(positions, "MF") {
+		stats = getMidfielderStats(player_name, stats)
+	}
+
+	if strings.Contains(positions, "FW") {
+		stats = getForwardStats(player_name, stats)
+	}
+}
+
 func getPositions(player_name string) string {
 	fmt.Println("Getting position...")
 	c := colly.NewCollector()
@@ -53,4 +75,20 @@ func getPositions(player_name string) string {
 	c.Visit(fbrefURL)
 
 	return positions
+}
+
+func getGoalkeeperStats(player_name string, stats map[string]string) map[string]string {
+	return stats
+}
+
+func getDefenderStats(player_name string, stats map[string]string) map[string]string {
+	return stats
+}
+
+func getMidfielderStats(player_name string, stats map[string]string) map[string]string {
+	return stats
+}
+
+func getForwardStats(player_name string, stats map[string]string) map[string]string {
+	return stats
 }
