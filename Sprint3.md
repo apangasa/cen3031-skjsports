@@ -20,7 +20,7 @@ The following unit tests were necessary for backend behavior:
 ## Issues to Address
 On the frontend side, 
 
-On the backend side, we planned to tackle issues related to storing ([See issue][i41]) and retrieving ([See issue][i42]) images. Also, various behavior needed to be addressed with regards to subscribers. We planned to create a subscribers table ([See issue][i46]), implement functionality to add ([See issue][i45]) and remove ([See issue][i47]) users to/from it, create a route for the frontend to indicate an unsubscription event ([See issue][i44]), and handle the cases of resubscription when a user is already subscribed ([See issue][i43]) and when they have previously unsubscribed ([See issue][i48]). 
+On the backend side, we planned to tackle issues related to storing ([See issue][i41]) and retrieving ([See issue][i42]) images. Also, various behavior needed to be addressed with regards to subscribers. We planned to create a subscribers table ([See issue][i46]), implement functionality to add ([See issue][i45]) and remove ([See issue][i47]) users to/from it, create a route for the frontend to indicate an unsubscription event ([See issue][i44]), and handle the cases of resubscription when a user is already subscribed ([See issue][i43]) and when they have previously unsubscribed ([See issue][i48]). We also wanted to tackle the player statistics part of the project - one of the first steps in doing so would be web scraping the relevant positions for each soccer player ([See issue][i53]) so that position-relevant statistics could be gathered.
 
 ## Issues Completed
 On the frontend side, 
@@ -64,5 +64,7 @@ https://universal-crater-481750.postman.co/workspace/6185c94f-4893-4149-a166-29e
 [i46]:https://github.com/apangasa/cen3031-skjsports/issues/46 
 [i47]:https://github.com/apangasa/cen3031-skjsports/issues/47 
 [i48]:https://github.com/apangasa/cen3031-skjsports/issues/48 
-[i49]:https://github.com/apangasa/cen3031-skjsports/issues/49 
+[i49]:https://github.com/apangasa/cen3031-skjsports/issues/49
+[i53]:https://github.com/apangasa/cen3031-skjsports/issues/53 
+
 
