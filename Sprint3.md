@@ -16,6 +16,7 @@ The following unit tests were necessary for frontend behavior:
 
 The following unit tests were necessary for backend behavior:
 - Testing that new subscribers are added to and can be retrieved from the database
+- Testing that individuals who resubscribe while already subscribed do not modify the database (original personal details are used)
 - Testing that unsubscribers are not retrieved when querying subscribers
 - Testing that resubscribers with the same details can be retrieved
 - Testing that resubscribers with different details can be retrieved and have the same details (i.e. after unsubscribing, someone resubscribes under same email but new name)
