@@ -15,13 +15,16 @@ The following unit tests were necessary for frontend behavior:
 - Testing the draft board
 
 The following unit tests were necessary for backend behavior:
-
+- Testing that new subscribers are added to and can be retrieved from the database
+- Testing that unsubscribers are not retrieved when querying subscribers
+- Testing that resubscribers with the same details can be retrieved
+- Testing that resubscribers with different details can be retrieved and have the same details (i.e. after unsubscribing, someone resubscribes under same email but new name)
 
 
 ## Issues to Address
 On the frontend side, we decided to work on the subscription feature ([See issue][i40]) of the blog, so that readers can subscribe to the blog, and keep up with the newest articles. Also, we focused on implementing the draft board for the writer ([See issue][i59]), as well as the ability for the writer to actually open drafts on the draft board ([See issue][i60]). This way, the writer of the blog would be able to create, save, and edit drafts before publishing them to the site. In terms of tests, we wanted to create unit tests for both the subscription button ([See issue][i58]) and the draft board ([See issue][i61]).
 
-On the backend side, we planned to tackle issues related to storing ([See issue][i41]) and retrieving ([See issue][i42]) images. Also, various behavior needed to be addressed with regards to subscribers. We planned to create a subscribers table ([See issue][i46]), implement functionality to add ([See issue][i45]) and remove ([See issue][i47]) users to/from it, create a route for the frontend to indicate an unsubscription event ([See issue][i44]), and handle the cases of resubscription when a user is already subscribed ([See issue][i43]) and when they have previously unsubscribed ([See issue][i48]). We also wanted to tackle the player statistics part of the project - one of the first steps in doing so would be web scraping the relevant positions for each soccer player ([See issue][i53]) so that position-relevant statistics could be gathered. Additionally, we wanted to add routes on the server for the frontend to request player ([See issue][i50]) and team ([See issue][i51]) stats.
+On the backend side, we planned to tackle issues related to storing ([See issue][i41]) and retrieving ([See issue][i42]) images. Also, various behavior needed to be addressed with regards to subscribers. We planned to create a subscribers table ([See issue][i46]), implement functionality to add ([See issue][i45]) and remove ([See issue][i47]) users to/from it, create a route for the frontend to indicate an unsubscription event ([See issue][i44]), and handle the cases of resubscription when a user is already subscribed ([See issue][i43]) and when they have previously unsubscribed ([See issue][i48]). All this subscription behavior required a number of unit tests as mentioned previously ([See issue][i63]). We also wanted to tackle the player statistics part of the project - one of the first steps in doing so would be web scraping the relevant positions for each soccer player ([See issue][i53]) so that position-relevant statistics could be gathered. Additionally, we wanted to add routes on the server for the frontend to request player ([See issue][i50]) and team ([See issue][i51]) stats.
 
 ## Issues Completed
 On the frontend side, we managed to succesfully create the subscription button ([See issue][i40]). If a reader so wishes, they are able to enter their email address into the site, and they will have subscribed to the blog. Also, we managed to create the draft board ([See issue][i59]) for the writer, and also succesfully implemented the ability for the writer to actually open drafts on the draft board ([See issue][i60]). We also completed the unit test for the subscription button, using Cypress ([See issue][i58]).
@@ -77,3 +80,4 @@ https://universal-crater-481750.postman.co/workspace/6185c94f-4893-4149-a166-29e
 [i60]:https://github.com/apangasa/cen3031-skjsports/issues/60
 [i61]:https://github.com/apangasa/cen3031-skjsports/issues/61
 
+[i63]:https://github.com/apangasa/cen3031-skjsports/issues/63
