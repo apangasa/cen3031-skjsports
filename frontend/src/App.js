@@ -1,6 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { MemoryRouter, Routes, Route } from "react-router-dom";
 import Home from "./Home.js";
 import Article from "./Post/Article.js";
 import Search from "./Navbar/Searchbar";
@@ -10,12 +10,12 @@ function App() {
   return (
     <>
       <Search />
-      <BrowserRouter>
+      <MemoryRouter>
         <Routes>
           <Route path={""} element={<Home />} />
           <Route path={"article"} element={<Article />} />
         </Routes>
-      </BrowserRouter>
+      </MemoryRouter>
     </>
   );
 }

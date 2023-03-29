@@ -14,6 +14,7 @@ function Home() {
     const output = []
 
     if (articles!= null) {
+
         articles.forEach((i,x) => {
             output.push(
                 <p>
@@ -32,7 +33,7 @@ function Home() {
     else {
         return (
             <>
-                Welcome to home page!
+                <p> Welcome to home page! </p>
                 {output}
             </>
         )
