@@ -30,6 +30,8 @@ func getPlayerStats(player_name string) map[string]string {
 	if strings.Contains(positions, "FW") {
 		stats = getForwardStats(player_name, stats)
 	}
+
+	return stats
 }
 
 func getPositions(player_name string) string {
