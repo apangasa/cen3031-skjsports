@@ -133,12 +133,62 @@ func getSearchResults(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func getPlayerStats(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		fmt.Println("New GET request received for player stats.")
+
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Content-Type", "application/json")
+
+		player_name := r.URL.Query().Get("player_name")
+		res := webScrapePlayerStats(player_name)
+
+		jsonRes, err := json.Marshal(res)
+
+		if err != nil {
+			log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+		}
+
+		w.Write(jsonRes)
+
+	} else {
+		fmt.Fprintf(w, "Unsupported request type.")
+	}
+}
+
+func getTeamStats(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		fmt.Println("New GET request received for player stats.")
+
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Content-Type", "application/json")
+
+		team_name := r.URL.Query().Get("team_name")
+		res := webScrapeTeamStats(team_name)
+
+		jsonRes, err := json.Marshal(res)
+
+		if err != nil {
+			log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+		}
+
+		w.Write(jsonRes)
+
+	} else {
+		fmt.Fprintf(w, "Unsupported request type.")
+	}
+}
+
 func main() {
 	http.HandleFunc("/", defaultRoute)
 	http.HandleFunc("/article", getArticle)
 	http.HandleFunc("/search", getSearchResults)
 	http.HandleFunc("/subscribe", subscribe)
 	http.HandleFunc("/unsubscribe", unsubscribe)
+	http.HandleFunc("/stats/player", getPlayerStats)
+	http.HandleFunc("/stats/team", getTeamStats)
 
 	fmt.Printf("Starting server at port 8080\n")
 	if err := http.ListenAndServe(":8080", nil); err != nil {

@@ -10,7 +10,15 @@ import (
 	"github.com/gocolly/colly"
 )
 
-func getPlayerStats(player_name string) map[string]string {
+func webScrapeTeamStats(team_name string) map[string]string {
+	var stats map[string]string
+
+	// populate stats
+
+	return stats
+}
+
+func webScrapePlayerStats(player_name string) map[string]string {
 	positions := getPositions(player_name)
 
 	var stats map[string]string
@@ -30,6 +38,8 @@ func getPlayerStats(player_name string) map[string]string {
 	if strings.Contains(positions, "FW") {
 		stats = getForwardStats(player_name, stats)
 	}
+
+	return stats
 }
 
 func getPositions(player_name string) string {
