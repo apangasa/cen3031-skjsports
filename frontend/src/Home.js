@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import {useState, useEffect} from 'react'
-
+import SubscribeForm from "./Subscribe";
 function Home() {
     //State
     const [articles, setArticles] = useState(null);
@@ -27,14 +27,20 @@ function Home() {
     }
     if (articles== null) {
         return(
+            <>
             <>Loading!</>
-        )
+        <SubscribeForm />
+                </>
+
+    )
     }
     else {
         return (
             <>
                 <p> Welcome to home page! </p>
                 {output}
+                <SubscribeForm />
+
             </>
         )
     }
