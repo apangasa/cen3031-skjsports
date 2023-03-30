@@ -35,7 +35,7 @@ On the backend side, we completely finished subscription functionality. That is,
 ## Issues Not Completed and Why
 On the frontend side, we were not able to succesfully create a unit test for the draft board ([See issue][i61]). We were unable to configure the tests properly, so it is something we will come back to and fix at a later date.
 
-On the backend side, we were also unable to create unit tests for getting player statistics ([See issue][i66]). This was due to loopholes remaining in our code whenever a search query returned multiple results and didn't reach the player page. Resolving this issue will be paramount moving forward.
+On the backend side, we were also unable to create unit tests for getting player statistics ([See issue][i66]). This was due to loopholes remaining in our code that didn't account for when a search query returned multiple results and didn't reach the player page directly. Resolving this issue will be paramount moving forward.
 
 
 
@@ -77,7 +77,11 @@ https://universal-crater-481750.postman.co/workspace/6185c94f-4893-4149-a166-29e
 [i49]:https://github.com/apangasa/cen3031-skjsports/issues/49
 [i50]:https://github.com/apangasa/cen3031-skjsports/issues/50 
 [i51]:https://github.com/apangasa/cen3031-skjsports/issues/51 
-[i53]:https://github.com/apangasa/cen3031-skjsports/issues/53 
+[i53]:https://github.com/apangasa/cen3031-skjsports/issues/53
+[i54]:https://github.com/apangasa/cen3031-skjsports/issues/54
+[i55]:https://github.com/apangasa/cen3031-skjsports/issues/55
+[i56]:https://github.com/apangasa/cen3031-skjsports/issues/56
+[i57]:https://github.com/apangasa/cen3031-skjsports/issues/57
 [i58]:https://github.com/apangasa/cen3031-skjsports/issues/58
 [i59]:https://github.com/apangasa/cen3031-skjsports/issues/59
 [i60]:https://github.com/apangasa/cen3031-skjsports/issues/60
