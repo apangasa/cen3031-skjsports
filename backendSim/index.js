@@ -26,6 +26,73 @@ app.get('/articleList', (req, res)=>{
     });
 });
 
+app.get('/draftBoard/', (req, res)=>{
+    res.status(200);
+    res.send({
+        list: [
+            {
+                id: '1',
+                title: "EXAMPLE TITLE - My 2022/2023 Premier League Predictions: ",
+                articleID: '01'
+            },
+            {
+                id: '2',
+                title: "EXAMPLE TITLE - Who Will Win Super Bowl 57?",
+                articleID: '02'
+            }
+        ]
+
+    });
+});
+
+app.get('/drafts/:articleID', (req, res)=>{
+    res.status(200);
+    if (req.params.articleID=='1') {
+        res.send({
+            list: [
+                {
+                    id: '1',
+                    contentType: "img",
+                },
+                {
+                    contentType: 'text',
+                    text: "EXAMPLE TEXT - My 2022/2023 Premier League Predictions: ",
+                },
+                {
+                    contentType: 'img',
+                    id: "2",
+                },
+                {
+                    contentType: 'text',
+                    text: "EXAMPLE TEXT - Who Will Win Super Bowl 57?",
+                }
+            ]
+        });
+    }
+    if (req.params.articleID=='2') {
+        res.send({
+            list: [
+                {
+                    id: '1',
+                    contentType: "img",
+                },
+                {
+                    contentType: 'text',
+                    text: "EXAMPLE TEXT - My 2022/2023 Premier League Predictions: ",
+                },
+                {
+                    contentType: 'img',
+                    id: "2",
+                },
+                {
+                    contentType: 'text',
+                    text: "EXAMPLE TEXT - Who Will Win Super Bowl 57?",
+                }
+            ]
+        });
+    }
+});
+
 app.get('/article/:articleID', (req, res)=>{
     res.status(200);
     if (req.params.articleID=='01') {
@@ -37,7 +104,7 @@ app.get('/article/:articleID', (req, res)=>{
                 },
                 {
                     contentType: 'text',
-                    text: "EXAMPLE TITLE - My 2022/2023 Premier League Predictions: ",
+                    text: "EXAMPLE TEXT - My 2022/2023 Premier League Predictions: ",
                 },
                 {
                     contentType: 'img',
@@ -45,7 +112,7 @@ app.get('/article/:articleID', (req, res)=>{
                 },
                 {
                     contentType: 'text',
-                    text: "EXAMPLE TITLE - Who Will Win Super Bowl 57?",
+                    text: "EXAMPLE TEXT - Who Will Win Super Bowl 57?",
                 }
             ]
         });
@@ -60,7 +127,6 @@ app.get('/image/:imageID', (req, res)=>{
     console.log("request img:" + req.params.imageID)
     res.status(200);
     res.sendFile(addr+req.params.imageID+'.png')
-
 });
 
 app.listen(PORT, (error) =>{

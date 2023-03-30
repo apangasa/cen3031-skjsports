@@ -127,9 +127,9 @@ func getSearchResults(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.Write(jsonRes)
-
 	} else {
 		fmt.Fprintf(w, "Unsupported request type.")
+		w.WriteHeader(http.StatusMethodNotAllowed)
 	}
 }
 
@@ -184,6 +184,7 @@ func getTeamStats(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/", defaultRoute)
 	http.HandleFunc("/article", getArticle)
+	http.HandleFunc("/search", article_search)
 	http.HandleFunc("/search", getSearchResults)
 	http.HandleFunc("/subscribe", subscribe)
 	http.HandleFunc("/unsubscribe", unsubscribe)
