@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
-import { MemoryRouter, Routes, Route} from 'react-router-dom'
-import Home from './Home.js'
-import Article from './Post/Article.js'
-import Search from './Navbar/Searchbar';
-
+import logo from "./logo.svg";
+import "./App.css";
+import { MemoryRouter, Routes, Route } from "react-router-dom";
+import Home from "./Home.js";
+import Article from "./Post/Article.js";
+import Search from "./Navbar/Searchbar";
+import Subscribe from "./Subscribe.js";
 
 function App() {
-
   return (
     <>
-    <Search />
-    <MemoryRouter>
+      <Search />
+      <MemoryRouter>
         <Routes>
-            <Route path={''} element={<Home/>}/>
-            <Route path={'article'} element={<Article/>}/>
+          <Route path={""} element={<Home />} />
+          <Route path={"article"} element={<Article />} />
         </Routes>
-    </MemoryRouter>
+      </MemoryRouter>
     </>
   );
-  
 }
 
 export default App;

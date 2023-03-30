@@ -2,6 +2,8 @@ const express = require('express');
 var cors = require('cors')
 const app = express()
 
+let addr = '/Users/kolliparas/Documents/GitHub/cen3031-skjsports/backendSim/'
+
 app.use(cors())
 const PORT = 5001;
 
@@ -57,7 +59,7 @@ app.get('/article/:articleID', (req, res)=>{
 app.get('/image/:imageID', (req, res)=>{
     console.log("request img:" + req.params.imageID)
     res.status(200);
-    res.sendFile('/Users/sumeetjena/Documents/GitHub/cen3031-skjsports/backendSim/'+req.params.imageID+'.png')
+    res.sendFile(addr+req.params.imageID+'.png')
 
 });
 
