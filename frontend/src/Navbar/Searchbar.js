@@ -1,38 +1,38 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 function SearchBar () {
 
     const [returnQuery, setReturnQuery] = useState("");
     const [input, setInput] = useState("");
 
-    function handleSubmit(e) {
+    const handleClick = (e) => {
         e.preventDefault();
-        var requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
-          
-          fetch("http://localhost8080:/search?search=" + input, requestOptions)
-          .then(response => response.json())
-          .then(result => setReturnQuery(returnQuery))       
-          .catch(error => console.log('error', error));
-          
-    const output = []
-    console.log(returnQuery)
-    for (let i in returnQuery) {
-        if (returnQuery[i].contentType == 'img') {
-            output.push(<img src={'http://localhost:8080/'+ returnQuery[i].id} />)
+        async function returnArticles() {
+            const response = await fetch("http://localhost:8080/search?search=" + input);
+            const json = await response.json();
+            setReturnQuery(json.results);
         }
-        else {
-            output.push(<p>{returnQuery[i].text}</p>)
-        }
-    }
-    console.log(output)
-    }
-
+        returnArticles();
     
+    }
+    
+    let articleList = [];
+
+    if (returnQuery != "") {
+        console.log(returnQuery);
+        articleList = returnQuery.map((article) =>
+            <li>{article.title}</li>
+        );
+    }
+ 
     return (
 
+        <>
+
+        {articleList}
+    
         <form action="/" method="GET">
         <label htmlFor="header-search">
             <span className="visually-hidden"></span>
@@ -44,12 +44,10 @@ function SearchBar () {
             placeholder="Search: "
             name="s" 
         />
-        <button type="Search" onClick={handleSubmit}>Search</button>
+        <button type="Search" onClick={handleClick}>Search</button>
     </form>
-
+    </>
     )
-
-    
-};
+}; 
 
 export default SearchBar;

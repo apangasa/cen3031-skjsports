@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -50,7 +51,65 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func article_search(w http.ResponseWriter, r *http.Request) {
+func subscribe(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		fmt.Println("New POST request received for new subscriber.")
+
+		// Set headers
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Content-Type", "application/json")
+
+		defer r.Body.Close()
+		body, _ := ioutil.ReadAll(r.Body)
+
+		bodyMap := make(map[string]string)
+		json.Unmarshal(body, &bodyMap)
+
+		success := addSubscriber(bodyMap["email"], bodyMap["first_name"], bodyMap["last_name"])
+
+		if success {
+			w.WriteHeader(http.StatusOK)
+		} else {
+			w.WriteHeader(http.StatusNotModified) // subscriber already exists
+		}
+
+	} else {
+		fmt.Fprintf(w, "Unsupported request type.")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+	}
+}
+
+func unsubscribe(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		fmt.Println("New POST request received for removing subscriber.")
+
+		// Set headers
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Content-Type", "application/json")
+
+		defer r.Body.Close()
+		body, _ := ioutil.ReadAll(r.Body)
+
+		bodyMap := make(map[string]string)
+		json.Unmarshal(body, &bodyMap)
+
+		success := removeSubscriber(bodyMap["email"])
+
+		if success {
+			w.WriteHeader(http.StatusOK)
+		} else {
+			w.WriteHeader(http.StatusNotModified) // user wasn't subscribed under given email
+		}
+
+	} else {
+		fmt.Fprintf(w, "Unsupported request type.")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+	}
+}
+
+func getSearchResults(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		fmt.Println("New GET request received for article search.")
 
@@ -59,20 +118,55 @@ func article_search(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
 		search := r.URL.Query().Get("search")
-		articles := searchArticle(search)
+		res := getArticlesMatchingSearch(search)
 
-		var resultsList []map[string]string
+		jsonRes, err := json.Marshal(res)
 
-		for i := 0; i < len(articles); i++ {
-			titleMap := make(map[string]string)
-			titleMap["id"] = articles[i].ID
-			titleMap["title"] = articles[i].Title
-			resultsList = append(resultsList, titleMap)
+		if err != nil {
+			log.Fatalf("Error happened in JSON marshal. Err: %s", err)
 		}
 
-		res := JsonMap{
-			"results": resultsList,
+		w.Write(jsonRes)
+	} else {
+		fmt.Fprintf(w, "Unsupported request type.")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+	}
+}
+
+func getPlayerStats(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		fmt.Println("New GET request received for player stats.")
+
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Content-Type", "application/json")
+
+		player_name := r.URL.Query().Get("player_name")
+		res := webScrapePlayerStats(player_name)
+
+		jsonRes, err := json.Marshal(res)
+
+		if err != nil {
+			log.Fatalf("Error happened in JSON marshal. Err: %s", err)
 		}
+
+		w.Write(jsonRes)
+
+	} else {
+		fmt.Fprintf(w, "Unsupported request type.")
+	}
+}
+
+func getTeamStats(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		fmt.Println("New GET request received for player stats.")
+
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Content-Type", "application/json")
+
+		team_name := r.URL.Query().Get("team_name")
+		res := webScrapeTeamStats(team_name)
 
 		jsonRes, err := json.Marshal(res)
 
@@ -91,6 +185,11 @@ func main() {
 	http.HandleFunc("/", defaultRoute)
 	http.HandleFunc("/article", getArticle)
 	http.HandleFunc("/search", article_search)
+	http.HandleFunc("/search", getSearchResults)
+	http.HandleFunc("/subscribe", subscribe)
+	http.HandleFunc("/unsubscribe", unsubscribe)
+	http.HandleFunc("/stats/player", getPlayerStats)
+	http.HandleFunc("/stats/team", getTeamStats)
 
 	fmt.Printf("Starting server at port 8080\n")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
