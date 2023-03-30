@@ -21,9 +21,9 @@ function SubscribeForm() {
     <form>
       <label>
         Subscribe!
-        <input type="text" email="Email:" />
+        <input type="text" email="Email:" id={"subscribeType"} disabled={false}/>
       </label>
-      <input type="submit" value="Submit" />
+      <input type="submit" value="Submit" id={"subscribeButton"}/>
     </form>
   );
 }
