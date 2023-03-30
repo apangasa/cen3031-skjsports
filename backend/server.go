@@ -184,7 +184,6 @@ func getTeamStats(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/", defaultRoute)
 	http.HandleFunc("/article", getArticle)
-	http.HandleFunc("/search", article_search)
 	http.HandleFunc("/search", getSearchResults)
 	http.HandleFunc("/subscribe", subscribe)
 	http.HandleFunc("/unsubscribe", unsubscribe)
