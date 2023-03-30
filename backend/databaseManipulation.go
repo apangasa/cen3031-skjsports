@@ -13,6 +13,13 @@ type Article struct {
 	TestEntry int
 }
 
+type Subscriber struct {
+	gorm.Model
+	ID        string `gorm:"primaryKey"`
+	FirstName string
+	LastName  string
+}
+
 func retrieveArticle(article_id string) *Article {
 	article := new(Article)
 
@@ -31,8 +38,21 @@ func retrieveArticle(article_id string) *Article {
 	return article
 }
 
-func searchArticle(search string) []Article {
+func searchDatabaseForArticles(search string) []Article {
 	var articles []Article
+
+	if search == "" {
+		return nil
+	}
+
+	for i := 0; i < len(search); i++ {
+		if search[i] != ' ' {
+			break
+		}
+		if i == len(search)-1 {
+			return nil
+		}
+	}
 
 	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
 
@@ -45,4 +65,64 @@ func searchArticle(search string) []Article {
 
 	return articles
 
+}
+
+func addSubscriber(email string, first string, last string) bool {
+	subscriber := Subscriber{ID: email, FirstName: first, LastName: last}
+
+	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	result := db.Create(&subscriber)
+
+	if result.RowsAffected != 0 {
+		return true
+	} else {
+		result := db.Unscoped().Model(&Subscriber{ID: email}).Where("deleted_at IS NOT NULL").Update("deleted_at", nil)
+
+		if result.RowsAffected != 0 {
+			db.Unscoped().Model(&Subscriber{ID: email}).Updates(Subscriber{FirstName: first, LastName: last})
+			return true
+		} else {
+			return false
+		}
+	}
+}
+
+func removeSubscriber(email string) bool {
+	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	result := db.Delete(&Subscriber{ID: email})
+	// result := db.Where("id = ?", email).Delete(&Subscriber{})
+
+	if result.RowsAffected != 0 {
+		return true
+	} else {
+		return false
+	}
+}
+
+func retrieveSubscriber(email string) *Subscriber {
+	subscriber := new(Subscriber)
+
+	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	result := db.First(&subscriber, "id = ?", email)
+
+	if result.Error == gorm.ErrRecordNotFound {
+		return nil // if record not found
+	}
+
+	return subscriber
 }
