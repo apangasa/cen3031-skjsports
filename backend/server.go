@@ -127,9 +127,9 @@ func getSearchResults(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.Write(jsonRes)
-
 	} else {
 		fmt.Fprintf(w, "Unsupported request type.")
+		w.WriteHeader(http.StatusMethodNotAllowed)
 	}
 }
 
