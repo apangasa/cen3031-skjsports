@@ -2,6 +2,8 @@ import Home from "../Home";
 import {useState, useEffect} from 'react'
 import {useLocation} from "react-router-dom";
 import WriteImage from "./WriteImage";
+import WriteText from "./WriteText";
+
 function Writer(props) {
     const [image, setImage] = useState(null)
     const [draftState, setDraftState] = useState({loading:true, objects:[]})
@@ -39,8 +41,10 @@ function Writer(props) {
                     const objects = [];
 
                     for (let i = 0; i<length; i++) {
-                        if (draftState.objects[i].type=='img')
+                        if (draftState.objects[i].contentType=='img')
                         objects.push(<WriteImage value={i}>{i}</WriteImage>);
+                        else if(draftState.objects[i].contentType=='text')
+                            objects.push(<WriteText textProps={draftState.objects[i].text}></WriteText>)
                     }
 
                     return objects;
