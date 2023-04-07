@@ -12,7 +12,7 @@ function WriteText(props) {
 
     return (
         <div>
-            <input type="text" onChange={onTextChange} className="textType" value={text}/>
+            <input type="text" onChange={onTextChange} className="textType" value={text} style={{width: "80%"}}/>
         </div>
     )
 }
