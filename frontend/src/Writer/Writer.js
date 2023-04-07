@@ -42,7 +42,7 @@ function Writer(props) {
 
                     for (let i = 0; i<length; i++) {
                         if (draftState.objects[i].contentType=='img')
-                        objects.push(<WriteImage value={i}>{i}</WriteImage>);
+                        objects.push(<WriteImage imageProps={draftState.objects[i].id}></WriteImage>);
                         else if(draftState.objects[i].contentType=='text')
                             objects.push(<WriteText textProps={draftState.objects[i].text}></WriteText>)
                     }
