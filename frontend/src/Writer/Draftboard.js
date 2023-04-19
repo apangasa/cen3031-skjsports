@@ -5,7 +5,7 @@ function Draftboard(props) {
     const [data, setData] = useState(null);
     console.log("DRAFTBOARD")
     useEffect(() => {
-        fetch('http://localhost:5001/draftBoard/')
+        fetch('http://localhost:8080/draftBoard/')
             .then(response => response.json())
             .then(result => setData(result.list))
     },[])
