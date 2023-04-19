@@ -375,6 +375,7 @@ func main() {
 	http.HandleFunc("/authenticate", Auth)
 	http.HandleFunc("/renew", Renew)
 	http.HandleFunc("/addWriter", addWriter)
+
 	http.HandleFunc("/logout", Logout)
 
 	fmt.Printf("Starting server at port 8080\n")
