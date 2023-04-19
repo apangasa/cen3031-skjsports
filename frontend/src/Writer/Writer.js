@@ -50,10 +50,6 @@ function Writer(props) {
         )
     }
 
-    /*handleTextInput: function(text) {
-        // handle the text input here (set some state, make an ajax call, etc)
-    },*/
-
 
     else if (draftState.objects.length > 0) {
 
