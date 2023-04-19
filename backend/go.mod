@@ -15,6 +15,7 @@ require (
 	github.com/antchfx/xpath v1.2.3 // indirect
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/gocolly/colly v1.2.0 // indirect
+	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.3.1 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
