@@ -1,14 +1,34 @@
 package main
 
 import (
+	"crypto/rand"
 	"regexp"
 	"strings"
 )
 
 type JsonMap map[string]interface{}
 
-func getArticleContentsByID(id string) JsonMap {
-	articleObj := retrieveArticle(id) // Get struct of Article by querying DB
+var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-"
+
+func shortID(length int) string {
+	ll := len(chars)
+	b := make([]byte, length)
+	rand.Read(b) // generates len(b) random bytes
+	for i := 0; i < length; i++ {
+		b[i] = chars[int(b[i])%ll]
+	}
+	return string(b)
+}
+
+func getArticleContentsByID(id string, draft bool) JsonMap {
+	var is_draft int
+	if draft {
+		is_draft = 1
+	} else {
+		is_draft = 0
+	}
+
+	articleObj := retrieveArticle(id, is_draft) // Get struct of Article by querying DB
 
 	if articleObj == nil {
 		return nil
@@ -16,6 +36,22 @@ func getArticleContentsByID(id string) JsonMap {
 
 	result := processArticle(articleObj) // Dissect article into text and image content list
 	return result
+}
+
+func wrapArticleContents(contentList []map[string]string) string {
+	content := ""
+
+	for i := 0; i < len(contentList); i++ {
+		if contentList[i]["contentType"] == "text" {
+			content += contentList[i]["text"]
+		} else if contentList[i]["contentType"] == "img" {
+			content += "<image " + contentList[i]["id"] + ">"
+		} else {
+			content += "" // unrecognized element
+		}
+	}
+
+	return content
 }
 
 func processArticle(articleObj *Article) JsonMap {
@@ -60,15 +96,41 @@ func processArticle(articleObj *Article) JsonMap {
 	contentList = append(contentList, contentMap)
 
 	res := JsonMap{
-		"title":   articleObj.Title,
-		"content": contentList,
+		"title":        articleObj.Title,
+		"content":      contentList,
+		"author":       articleObj.Author,
+		"author_email": articleObj.AuthorEmail,
 	}
 
 	return res
 }
 
-func getArticlesMatchingSearch(search string) JsonMap {
-	articles := searchDatabaseForArticles(search)
+func getArticlesMatchingAuthorId(author_id string, draft bool) JsonMap {
+	var is_draft int
+	if draft {
+		is_draft = 1
+	} else {
+		is_draft = 0
+	}
+
+	articles := retrieveAuthorArticles(author_id, is_draft)
+	if articles == nil {
+		return nil
+	}
+
+	res := formatArticles(articles)
+	return res
+}
+
+func getArticlesMatchingSearch(search string, draft bool) JsonMap {
+	var is_draft int
+	if draft {
+		is_draft = 1
+	} else {
+		is_draft = 0
+	}
+
+	articles := searchDatabaseForArticles(search, is_draft)
 	if articles == nil {
 		return nil
 	}

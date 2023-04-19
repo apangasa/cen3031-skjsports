@@ -7,10 +7,12 @@ import (
 
 type Article struct {
 	gorm.Model
-	ID        string `gorm:"primaryKey"`
-	Title     string
-	Content   string
-	TestEntry int
+	ID          string `gorm:"primaryKey"`
+	Title       string
+	Content     string
+	Author      string
+	AuthorEmail string
+	IsDraft     int
 }
 
 type Subscriber struct {
@@ -20,7 +22,14 @@ type Subscriber struct {
 	LastName  string
 }
 
-func retrieveArticle(article_id string) *Article {
+type Author struct {
+	gorm.Model
+	ID          string `gorm:"primaryKey"`
+	Author      string
+	AuthorEmail string
+}
+
+func retrieveArticle(article_id string, is_draft int) *Article {
 	article := new(Article)
 
 	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
@@ -29,7 +38,7 @@ func retrieveArticle(article_id string) *Article {
 		panic("failed to connect database")
 	}
 
-	result := db.First(&article, "id = ?", article_id)
+	result := db.Where("is_draft = ?", is_draft).First(&article, "id = ?", article_id)
 
 	if result.Error == gorm.ErrRecordNotFound {
 		return nil // if record not found
@@ -38,7 +47,28 @@ func retrieveArticle(article_id string) *Article {
 	return article
 }
 
-func searchDatabaseForArticles(search string) []Article {
+func retrieveAuthorArticles(author_id string, is_draft int) []Article {
+	var articles []Article
+	author := new(Author)
+
+	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	result := db.First(&author, "id = ?", author_id)
+
+	if result.Error == gorm.ErrRecordNotFound {
+		return nil
+	}
+
+	db.Where("author_email = ? AND is_draft = ?", author.AuthorEmail, is_draft).Find(&articles)
+
+	return articles
+}
+
+func searchDatabaseForArticles(search string, is_draft int) []Article {
 	var articles []Article
 
 	if search == "" {
@@ -61,7 +91,11 @@ func searchDatabaseForArticles(search string) []Article {
 	}
 
 	//db.First(&articles, "title = ?", search)
-	db.Raw("SELECT id, title FROM articles WHERE title LIKE '%" + search + "%'").Scan(&articles)
+	if is_draft == 1 {
+		db.Raw("SELECT id, title FROM articles WHERE is_draft = '1' AND title LIKE '%" + search + "%'").Scan(&articles)
+	} else {
+		db.Raw("SELECT id, title FROM articles WHERE is_draft = '0' AND title LIKE '%" + search + "%'").Scan(&articles)
+	}
 
 	return articles
 
@@ -125,4 +159,72 @@ func retrieveSubscriber(email string) *Subscriber {
 	}
 
 	return subscriber
+}
+
+func addDraftToDatabase(title string, content string, author_email string) string {
+	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	article_id := shortID(16)
+	test_article := Article{ID: article_id}
+	result := db.First(&test_article)
+	for result.Error != gorm.ErrRecordNotFound {
+		article_id := shortID(16)
+		test_article := Article{ID: article_id}
+		result = db.First(&test_article)
+	}
+
+	author := new(Author)
+	db.Where("author_email = ?", author_email).First(&author)
+
+	draft := Article{ID: article_id, Title: title, Content: content, Author: author.Author, AuthorEmail: author_email, IsDraft: 1}
+
+	db.Create(&draft)
+
+	return article_id
+}
+
+func updateDraftInDatabase(article_id string, content string) bool {
+	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	draft := Article{ID: article_id}
+
+	result := db.Where("is_draft = ?", 1).First(&draft)
+
+	if result.Error == gorm.ErrRecordNotFound {
+		return false
+	}
+
+	draft.Content = content
+	db.Save(&draft)
+
+	return true
+}
+
+func convertDraftToArticle(article_id string) bool {
+	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	draft := Article{ID: article_id}
+
+	result := db.Where("is_draft = ?", 1).First(&draft)
+
+	if result.Error == gorm.ErrRecordNotFound {
+		return false
+	}
+
+	draft.IsDraft = 0
+	db.Save(&draft)
+
+	return true
 }
