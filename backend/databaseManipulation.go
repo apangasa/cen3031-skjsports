@@ -68,6 +68,20 @@ func retrieveAuthorArticles(author_id string, is_draft int) []Article {
 	return articles
 }
 
+func retrieveArticles() []Article {
+	var articles []Article
+
+	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	db.Where("is_draft = ?", 0).Find(&articles)
+
+	return articles
+}
+
 func searchDatabaseForArticles(search string, is_draft int) []Article {
 	var articles []Article
 

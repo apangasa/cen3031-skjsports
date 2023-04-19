@@ -105,6 +105,15 @@ func processArticle(articleObj *Article) JsonMap {
 	return res
 }
 
+func getAllArticles() JsonMap {
+	articles := retrieveArticles()
+	if articles == nil {
+		return nil
+	}
+	res := formatArticles(articles)
+	return res
+}
+
 func getArticlesMatchingAuthorId(author_id string, draft bool) JsonMap {
 	var is_draft int
 	if draft {

@@ -89,6 +89,30 @@ func getDraft(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func getArticles(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		fmt.Println("New GET request received for get all articles.")
+
+		// Set headers
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Content-Type", "application/json")
+
+		res := getAllArticles()
+
+		jsonRes, err := json.Marshal(res)
+
+		if err != nil {
+			log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+		}
+
+		w.Write(jsonRes)
+	} else {
+		fmt.Fprintf(w, "Unsupported request type.")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+	}
+}
+
 func getArticlesByAuthor(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		fmt.Println("New GET request received for article retrieval by author.")
@@ -387,7 +411,8 @@ func publishDraft(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/", defaultRoute)
 	http.HandleFunc("/article", getArticle)
-	http.HandleFunc("/articles", getArticlesByAuthor)
+	http.HandleFunc("/articles", getArticles)
+	http.HandleFunc("/articles-by-author", getArticlesByAuthor)
 	http.HandleFunc("/search", getSearchResults)
 	http.HandleFunc("/subscribe", subscribe)
 	http.HandleFunc("/unsubscribe", unsubscribe)
