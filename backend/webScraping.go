@@ -10,7 +10,11 @@ import (
 	"github.com/gocolly/colly"
 )
 
-func getPlayerStats(player_name string) map[string]string {
+func webScrapeTeamStats(team_name string) map[string]string {
+	return nil
+}
+
+func webScrapePlayerStats(player_name string) map[string]string {
 	fmt.Println("Getting position...")
 
 	formData := url.Values{}
