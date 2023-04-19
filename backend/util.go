@@ -20,8 +20,15 @@ func shortID(length int) string {
 	return string(b)
 }
 
-func getArticleContentsByID(id string) JsonMap {
-	articleObj := retrieveArticle(id) // Get struct of Article by querying DB
+func getArticleContentsByID(id string, draft bool) JsonMap {
+	var is_draft int
+	if draft {
+		is_draft = 1
+	} else {
+		is_draft = 0
+	}
+
+	articleObj := retrieveArticle(id, is_draft) // Get struct of Article by querying DB
 
 	if articleObj == nil {
 		return nil
@@ -98,8 +105,15 @@ func processArticle(articleObj *Article) JsonMap {
 	return res
 }
 
-func getArticlesMatchingAuthorId(author_id string) JsonMap {
-	articles := retrieveAuthorArticles(author_id)
+func getArticlesMatchingAuthorId(author_id string, draft bool) JsonMap {
+	var is_draft int
+	if draft {
+		is_draft = 1
+	} else {
+		is_draft = 0
+	}
+
+	articles := retrieveAuthorArticles(author_id, is_draft)
 	if articles == nil {
 		return nil
 	}
@@ -108,8 +122,15 @@ func getArticlesMatchingAuthorId(author_id string) JsonMap {
 	return res
 }
 
-func getArticlesMatchingSearch(search string) JsonMap {
-	articles := searchDatabaseForArticles(search)
+func getArticlesMatchingSearch(search string, draft bool) JsonMap {
+	var is_draft int
+	if draft {
+		is_draft = 1
+	} else {
+		is_draft = 0
+	}
+
+	articles := searchDatabaseForArticles(search, is_draft)
 	if articles == nil {
 		return nil
 	}
