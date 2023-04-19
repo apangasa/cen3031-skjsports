@@ -277,16 +277,25 @@ func addAuthor(name string, email string) bool {
 	}
 }
 
-func addImage(encoding string) bool {
+func addImage(encoding string) string {
 	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
 
 	if err != nil {
 		panic("failed to connect database")
 	}
 
-	if result.RowsAffected != 0 {
-		return true
-	} else {
-		return false
+	image_id := shortID(16)
+	test_image := Image{ID: image_id}
+	result := db.First(&test_image)
+	for result.Error != gorm.ErrRecordNotFound {
+		image_id := shortID(16)
+		test_image := Article{ID: image_id}
+		result = db.First(&test_image)
 	}
+
+	image := Image{ID: image_id, Encoding: encoding}
+
+	db.Create(&image)
+
+	return image_id
 }

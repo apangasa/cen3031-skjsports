@@ -464,13 +464,19 @@ func uploadImage(w http.ResponseWriter, r *http.Request) {
 		bodyMap := make(map[string]string)
 		json.Unmarshal(body, &bodyMap)
 
-		success := addImage(bodyMap["image_encoding"])
+		image_id := addImage(bodyMap["image_encoding"])
 
-		if success {
-			w.WriteHeader(http.StatusOK)
-		} else {
-			w.WriteHeader(http.StatusNotModified) // author already exists
+		res := JsonMap{
+			"image_id": image_id,
 		}
+
+		jsonRes, err := json.Marshal(res)
+
+		if err != nil {
+			log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+		}
+
+		w.Write(jsonRes)
 
 	} else {
 		fmt.Fprintf(w, "Unsupported request type.")
