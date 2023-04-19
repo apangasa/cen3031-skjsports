@@ -30,6 +30,12 @@ type Author struct {
 	AuthorEmail string
 }
 
+type Image struct {
+	gorm.Model
+	ID       string `gorm:"primaryKey"`
+	Encoding string
+}
+
 func retrieveArticle(article_id string, is_draft int) *Article {
 	article := new(Article)
 
@@ -263,6 +269,20 @@ func addAuthor(name string, email string) bool {
 	author := Author{ID: author_id, Author: name, AuthorEmail: email}
 
 	result = db.Create(&author)
+
+	if result.RowsAffected != 0 {
+		return true
+	} else {
+		return false
+	}
+}
+
+func addImage(encoding string) bool {
+	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
 
 	if result.RowsAffected != 0 {
 		return true
