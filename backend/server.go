@@ -484,6 +484,38 @@ func uploadImage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func getImage(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		fmt.Println("New GET request received for image retrieval.")
+
+		// Set headers
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Content-Type", "application/json")
+
+		id := r.URL.Query().Get("id") // Access query param
+		result := getImageEncodingById(id)
+
+		if result == nil {
+			w.WriteHeader(http.StatusNotFound)
+		} else {
+			jsonRes, err := json.Marshal(result)
+
+			if err != nil {
+				log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+				w.WriteHeader(http.StatusInternalServerError)
+				w.Write(jsonRes)
+			} else {
+				w.WriteHeader(http.StatusOK)
+				w.Write(jsonRes)
+			}
+		}
+	} else {
+		fmt.Fprintf(w, "Unsupported request type.")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+	}
+}
+
 func main() {
 	http.HandleFunc("/", defaultRoute)
 	http.HandleFunc("/article", getArticle)
@@ -494,6 +526,7 @@ func main() {
 	http.HandleFunc("/unsubscribe", unsubscribe)
 	http.HandleFunc("/stats/player", getPlayerStats)
 	http.HandleFunc("/stats/team", getTeamStats)
+	http.HandleFunc("/image", getImage)
 
 	// Require Authentication
 	http.HandleFunc("/create-draft", createDraft)

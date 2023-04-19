@@ -38,6 +38,20 @@ func getArticleContentsByID(id string, draft bool) JsonMap {
 	return result
 }
 
+func getImageEncodingById(id string) JsonMap {
+	imageObj := retrieveImage(id)
+
+	if imageObj == nil {
+		return nil
+	}
+
+	result := JsonMap{
+		"image_id": id,
+		"encoding": imageObj.Encoding,
+	}
+	return result
+}
+
 func wrapArticleContents(contentList []map[string]string) string {
 	content := ""
 
