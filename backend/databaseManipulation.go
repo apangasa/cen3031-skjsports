@@ -207,3 +207,24 @@ func updateDraftInDatabase(article_id string, content string) bool {
 
 	return true
 }
+
+func convertDraftToArticle(article_id string) bool {
+	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	draft := Article{ID: article_id}
+
+	result := db.First(&draft)
+
+	if result.Error == gorm.ErrRecordNotFound {
+		return false
+	}
+
+	draft.IsDraft = 0
+	db.Save(&draft)
+
+	return true
+}
