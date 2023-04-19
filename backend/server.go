@@ -409,6 +409,12 @@ func publishDraft(w http.ResponseWriter, r *http.Request) {
 }
 
 func addWriter(w http.ResponseWriter, r *http.Request) {
+	claims := &Claims{}
+	if !parser(w, r, claims) {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
 	if r.Method == "POST" {
 		fmt.Println("New POST request received for new writer.")
 
@@ -424,6 +430,41 @@ func addWriter(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(body, &bodyMap)
 
 		success := addAuthor(bodyMap["author"], bodyMap["author_email"])
+
+		if success {
+			w.WriteHeader(http.StatusOK)
+		} else {
+			w.WriteHeader(http.StatusNotModified) // author already exists
+		}
+
+	} else {
+		fmt.Fprintf(w, "Unsupported request type.")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+	}
+}
+
+func uploadImage(w http.ResponseWriter, r *http.Request) {
+	claims := &Claims{}
+	if !parser(w, r, claims) {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	if r.Method == "POST" {
+		fmt.Println("New POST request received for new writer.")
+
+		// Set headers
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Content-Type", "application/json")
+
+		defer r.Body.Close()
+		body, _ := ioutil.ReadAll(r.Body)
+
+		bodyMap := make(map[string]string)
+		json.Unmarshal(body, &bodyMap)
+
+		success := addImage(bodyMap["image_encoding"])
 
 		if success {
 			w.WriteHeader(http.StatusOK)
@@ -455,6 +496,7 @@ func main() {
 	http.HandleFunc("/draft", getDraft)
 	http.HandleFunc("/drafts", getDraftsByAuthor)
 	http.HandleFunc("/add-writer", addWriter)
+	http.HandleFunc("/add-image", uploadImage)
 
 	// Login-Related
 	http.HandleFunc("/signin", Signin)
