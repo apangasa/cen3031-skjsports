@@ -67,6 +67,16 @@ func processArticle(articleObj *Article) JsonMap {
 	return res
 }
 
+func getArticlesMatchingAuthorId(author_id string) JsonMap {
+	articles := retrieveAuthorArticles(author_id)
+	if articles == nil {
+		return nil
+	}
+
+	res := formatArticles(articles)
+	return res
+}
+
 func getArticlesMatchingSearch(search string) JsonMap {
 	articles := searchDatabaseForArticles(search)
 	if articles == nil {

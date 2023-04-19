@@ -60,8 +60,8 @@ func getArticlesByAuthor(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		w.Header().Set("Content-Type", "application/json")
 
-		id := r.URL.Query().Get("author_id") // Access query param
-		res := getArticlesMatchingSearch(id) // TODO replace with getting articles with matching article id
+		id := r.URL.Query().Get("author_id")   // Access query param
+		res := getArticlesMatchingAuthorId(id) // TODO replace with getting articles with matching article id
 
 		jsonRes, err := json.Marshal(res)
 
