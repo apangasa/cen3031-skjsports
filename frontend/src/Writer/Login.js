@@ -1,9 +1,9 @@
-import {setState} from 'react'
-import AuthService from "auth.js";
+import {useState, useEffect} from 'react'
+import AuthService from "./auth.js";
 
 function Login(props) {
 
-    let [user, setUser] = setState({
+    let [user, setUser] = useState({
         username: "",
         password: "",
         loading: false,
@@ -59,5 +59,62 @@ function Login(props) {
             loading: true
         });
     }
+    return (
+        <div className="col-md-12">
+            <div className="card card-container">
+
+                <button
+                    onSubmit={() => handleLogin}
+
+                > login </button>
+                    <div className="form-group">
+                        <label htmlFor="username">Username</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            name="username"
+                            value={user.username}
+                            onChange={() => onChangeUsername}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="password">Password</label>
+                        <input
+                            type="password"
+                            className="form-control"
+                            name="password"
+                            value={user.password}
+                            onChange={() => onChangePassword}
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <button
+                            className="btn btn-primary btn-block"
+                            disabled={user.loading}
+                        >
+                            {user.loading && (
+                                <span className="spinner-border spinner-border-sm"></span>
+                            )}
+                            <span>Login</span>
+                        </button>
+                    </div>
+
+                    {user.message && (
+                        <div className="form-group">
+                            <div className="alert alert-danger" role="alert">
+                                {user.message}
+                            </div>
+                        </div>
+                    )}
+                    <button
+                        style={{ display: "none" }}
+
+                    > check </button>
+            </div>
+        </div>
+    );
 
 }
+
+export default Login;
