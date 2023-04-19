@@ -4,8 +4,8 @@ info:
     title: "SKJSports API"
     description: Backend for SKJSports blog
 servers:
-    - url: http://localhost:8080
-      description: Local testing server
+  - url: http://localhost:8080
+    description: Local testing server
 paths:
     /article:
         parameters:
@@ -114,7 +114,7 @@ components:
                                 type: string
                                 description: 'This field only exists if `contentType` is set to "text".'
                                 example: "Moments can define World Cups, and moments can inspire generations. From Pele’s header, to Diego Maradona’s hand, to Roberto Baggio’s miss, to Zinedine Zidane’s headbutt, to Mario Gotze’s volley, and everything in between, the World Cup has long been defined by a series of moments, etched in the annals of soccer history."
-                            imageId:
+                            id:
                                 type: string
                                 description: 'This field only exists if `contentType` is set to "image".'
                                 example: ""

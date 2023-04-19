@@ -52,6 +52,12 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 }
 
 func getDraft(w http.ResponseWriter, r *http.Request) {
+	claims := &Claims{}
+	if !parser(w, r, claims) {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
 	if r.Method == "GET" {
 		fmt.Println("New GET request received for article retrieval.")
 
@@ -77,6 +83,30 @@ func getDraft(w http.ResponseWriter, r *http.Request) {
 				w.Write(jsonRes)
 			}
 		}
+	} else {
+		fmt.Fprintf(w, "Unsupported request type.")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+	}
+}
+
+func getArticles(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		fmt.Println("New GET request received for get all articles.")
+
+		// Set headers
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Content-Type", "application/json")
+
+		res := getAllArticles()
+
+		jsonRes, err := json.Marshal(res)
+
+		if err != nil {
+			log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+		}
+
+		w.Write(jsonRes)
 	} else {
 		fmt.Fprintf(w, "Unsupported request type.")
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -109,6 +139,12 @@ func getArticlesByAuthor(w http.ResponseWriter, r *http.Request) {
 }
 
 func getDraftsByAuthor(w http.ResponseWriter, r *http.Request) {
+	claims := &Claims{}
+	if !parser(w, r, claims) {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
 	if r.Method == "GET" {
 		fmt.Println("New GET request received for article retrieval by author.")
 
@@ -264,6 +300,12 @@ func getTeamStats(w http.ResponseWriter, r *http.Request) {
 }
 
 func createDraft(w http.ResponseWriter, r *http.Request) {
+	claims := &Claims{}
+	if !parser(w, r, claims) {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
 	if r.Method == "POST" {
 		fmt.Println("New GET request received for player stats.")
 
@@ -299,6 +341,12 @@ func createDraft(w http.ResponseWriter, r *http.Request) {
 }
 
 func editDraft(w http.ResponseWriter, r *http.Request) {
+	claims := &Claims{}
+	if !parser(w, r, claims) {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
 	if r.Method == "POST" {
 		fmt.Println("New GET request received for player stats.")
 
@@ -328,6 +376,12 @@ func editDraft(w http.ResponseWriter, r *http.Request) {
 }
 
 func publishDraft(w http.ResponseWriter, r *http.Request) {
+	claims := &Claims{}
+	if !parser(w, r, claims) {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
 	if r.Method == "POST" {
 		fmt.Println("New GET request received for player stats.")
 
@@ -354,28 +408,140 @@ func publishDraft(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func addWriter(w http.ResponseWriter, r *http.Request) {
+	claims := &Claims{}
+	if !parser(w, r, claims) {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	if r.Method == "POST" {
+		fmt.Println("New POST request received for new writer.")
+
+		// Set headers
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Content-Type", "application/json")
+
+		defer r.Body.Close()
+		body, _ := ioutil.ReadAll(r.Body)
+
+		bodyMap := make(map[string]string)
+		json.Unmarshal(body, &bodyMap)
+
+		success := addAuthor(bodyMap["author"], bodyMap["author_email"])
+
+		if success {
+			w.WriteHeader(http.StatusOK)
+		} else {
+			w.WriteHeader(http.StatusNotModified) // author already exists
+		}
+
+	} else {
+		fmt.Fprintf(w, "Unsupported request type.")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+	}
+}
+
+func uploadImage(w http.ResponseWriter, r *http.Request) {
+	claims := &Claims{}
+	if !parser(w, r, claims) {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	if r.Method == "POST" {
+		fmt.Println("New POST request received for new writer.")
+
+		// Set headers
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Content-Type", "application/json")
+
+		defer r.Body.Close()
+		body, _ := ioutil.ReadAll(r.Body)
+
+		bodyMap := make(map[string]string)
+		json.Unmarshal(body, &bodyMap)
+
+		image_id := addImage(bodyMap["image_encoding"])
+
+		res := JsonMap{
+			"image_id": image_id,
+		}
+
+		jsonRes, err := json.Marshal(res)
+
+		if err != nil {
+			log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+		}
+
+		w.Write(jsonRes)
+
+	} else {
+		fmt.Fprintf(w, "Unsupported request type.")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+	}
+}
+
+func getImage(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		fmt.Println("New GET request received for image retrieval.")
+
+		// Set headers
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Content-Type", "application/json")
+
+		id := r.URL.Query().Get("id") // Access query param
+		result := getImageEncodingById(id)
+
+		if result == nil {
+			w.WriteHeader(http.StatusNotFound)
+		} else {
+			jsonRes, err := json.Marshal(result)
+
+			if err != nil {
+				log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+				w.WriteHeader(http.StatusInternalServerError)
+				w.Write(jsonRes)
+			} else {
+				w.WriteHeader(http.StatusOK)
+				w.Write(jsonRes)
+			}
+		}
+	} else {
+		fmt.Fprintf(w, "Unsupported request type.")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+	}
+}
+
 func main() {
 	http.HandleFunc("/", defaultRoute)
 	http.HandleFunc("/article", getArticle)
-	http.HandleFunc("/articles", getArticlesByAuthor)
+	http.HandleFunc("/articles", getArticles)
+	http.HandleFunc("/articles-by-author", getArticlesByAuthor)
 	http.HandleFunc("/search", getSearchResults)
 	http.HandleFunc("/subscribe", subscribe)
 	http.HandleFunc("/unsubscribe", unsubscribe)
 	http.HandleFunc("/stats/player", getPlayerStats)
 	http.HandleFunc("/stats/team", getTeamStats)
+	http.HandleFunc("/image", getImage)
 
+	// Require Authentication
 	http.HandleFunc("/create-draft", createDraft)
 	http.HandleFunc("/edit-draft", editDraft)
 	http.HandleFunc("/publish-draft", publishDraft)
+	http.HandleFunc("/draft", getDraft)
+	http.HandleFunc("/drafts", getDraftsByAuthor)
+	http.HandleFunc("/add-writer", addWriter)
+	http.HandleFunc("/add-image", uploadImage)
 
-	http.HandleFunc("/draft", getArticle)
-	http.HandleFunc("/drafts", getArticlesByAuthor)
-
+	// Login-Related
 	http.HandleFunc("/signin", Signin)
 	http.HandleFunc("/authenticate", Auth)
 	http.HandleFunc("/renew", Renew)
-	http.HandleFunc("/addWriter", addWriter)
-
+	http.HandleFunc("/createWriterAccount", createWriterAccount)
 	http.HandleFunc("/logout", Logout)
 
 	fmt.Printf("Starting server at port 8080\n")

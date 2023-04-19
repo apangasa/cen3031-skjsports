@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
+import {Navigate, useLocation}  from "react-router-dom";
 
 function SearchBar () {
-
+    let { pathname } = useLocation();
     const [returnQuery, setReturnQuery] = useState("");
     const [input, setInput] = useState("");
 
@@ -15,7 +16,7 @@ function SearchBar () {
             setReturnQuery(json.results);
         }
         returnArticles();
-    
+
     }
     
     let articleList = [];
@@ -26,13 +27,15 @@ function SearchBar () {
             <li>{article.title}</li>
         );
     }
- 
+    let returnSize = returnQuery!="";
+    console.log(returnSize)
     return (
 
         <>
 
-        {articleList}
-    
+            {
+                returnSize && !pathname.includes("/search") ? <Navigate to='/search' state={{returnQuery }} replace={true}/>
+            :
         <form action="/" method="GET">
         <label htmlFor="header-search">
             <span className="visually-hidden"></span>
@@ -45,7 +48,7 @@ function SearchBar () {
             name="s" 
         />
         <button type="Search" onClick={handleClick}>Search</button>
-    </form>
+    </form> }
     </>
     )
 }; 
