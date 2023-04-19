@@ -364,12 +364,12 @@ func main() {
 	http.HandleFunc("/stats/player", getPlayerStats)
 	http.HandleFunc("/stats/team", getTeamStats)
 
+	// Login Protected
 	http.HandleFunc("/create-draft", createDraft)
 	http.HandleFunc("/edit-draft", editDraft)
 	http.HandleFunc("/publish-draft", publishDraft)
-
-	http.HandleFunc("/draft", getArticle)
-	http.HandleFunc("/drafts", getArticlesByAuthor)
+	http.HandleFunc("/draft", getDraft)
+	http.HandleFunc("/drafts", getDraftsByAuthor)
 
 	http.HandleFunc("/signin", Signin)
 	http.HandleFunc("/authenticate", Auth)
