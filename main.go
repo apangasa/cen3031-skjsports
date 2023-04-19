@@ -591,3 +591,13 @@ func getForwardStats(fbrefURL string, stats map[string]string) map[string]string
 
 	return stats
 }
+
+func main() {
+	name := "itumeleng khune"
+	data := make(map[string]string)
+	data = webScrapePlayerStats(name)
+
+	for key, val := range data {
+		fmt.Printf("Key: %s, Value: %s\n", key, val)
+	}
+}
