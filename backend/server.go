@@ -51,6 +51,31 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func getArticlesByAuthor(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		fmt.Println("New GET request received for article retrieval by author.")
+
+		// Set headers
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Content-Type", "application/json")
+
+		id := r.URL.Query().Get("author_id") // Access query param
+		res := getArticlesMatchingSearch(id) // TODO replace with getting articles with matching article id
+
+		jsonRes, err := json.Marshal(res)
+
+		if err != nil {
+			log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+		}
+
+		w.Write(jsonRes)
+	} else {
+		fmt.Fprintf(w, "Unsupported request type.")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+	}
+}
+
 func subscribe(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		fmt.Println("New POST request received for new subscriber.")
@@ -184,6 +209,7 @@ func getTeamStats(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/", defaultRoute)
 	http.HandleFunc("/article", getArticle)
+	http.HandleFunc("/articles", getArticlesByAuthor)
 	http.HandleFunc("/search", getSearchResults)
 	http.HandleFunc("/subscribe", subscribe)
 	http.HandleFunc("/unsubscribe", unsubscribe)
