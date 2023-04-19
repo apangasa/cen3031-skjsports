@@ -47,6 +47,27 @@ func retrieveArticle(article_id string) *Article {
 	return article
 }
 
+func retrieveAuthorArticles(author_id string) []Article {
+	var articles []Article
+	author := new(Author)
+
+	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	result := db.First(&author, "id = ?", author_id)
+
+	if result.Error == gorm.ErrRecordNotFound {
+		return nil
+	}
+
+	db.Where("author_email = ?", author.AuthorEmail).Find(&articles)
+
+	return articles
+}
+
 func searchDatabaseForArticles(search string) []Article {
 	var articles []Article
 
