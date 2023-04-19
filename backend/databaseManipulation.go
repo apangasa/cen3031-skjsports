@@ -13,6 +13,7 @@ type Article struct {
 	Author      string
 	AuthorEmail string
 	IsDraft     int
+	ImageId     string
 }
 
 type Subscriber struct {

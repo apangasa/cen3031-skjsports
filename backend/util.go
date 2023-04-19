@@ -98,6 +98,7 @@ func processArticle(articleObj *Article) JsonMap {
 	res := JsonMap{
 		"title":        articleObj.Title,
 		"content":      contentList,
+		"image_id":     articleObj.ImageId,
 		"author":       articleObj.Author,
 		"author_email": articleObj.AuthorEmail,
 	}
@@ -155,6 +156,7 @@ func formatArticles(articles []Article) JsonMap {
 		titleMap := make(map[string]string)
 		titleMap["id"] = articles[i].ID
 		titleMap["title"] = articles[i].Title
+		titleMap["image_id"] = articles[i].ImageId
 		resultsList = append(resultsList, titleMap)
 	}
 
