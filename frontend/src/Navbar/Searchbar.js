@@ -5,7 +5,6 @@ import {Navigate, useLocation}  from "react-router-dom";
 
 function SearchBar () {
     let { pathname } = useLocation();
-
     const [returnQuery, setReturnQuery] = useState("");
     const [input, setInput] = useState("");
 
@@ -17,7 +16,7 @@ function SearchBar () {
             setReturnQuery(json.results);
         }
         returnArticles();
-    
+
     }
     
     let articleList = [];
@@ -35,7 +34,7 @@ function SearchBar () {
         <>
 
             {
-                returnSize && !pathname.includes("/search") ? <Navigate to='/search' state={{returnQuery }} />
+                returnSize && !pathname.includes("/search") ? <Navigate to='/search' state={{returnQuery }} replace={true}/>
             :
         <form action="/" method="GET">
         <label htmlFor="header-search">

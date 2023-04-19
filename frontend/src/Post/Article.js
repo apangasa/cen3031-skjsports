@@ -2,6 +2,7 @@ import Home from "../Home";
 import {useState, useEffect} from 'react'
 import {useLocation} from "react-router-dom";
 function Article(props) {
+    console.log("article")
     const [data, setData] = useState({'content': []});
     let articleID = useLocation().state
     console.log(articleID)

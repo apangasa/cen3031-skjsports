@@ -18,7 +18,7 @@ function SearchResults() {
         articles.forEach((i,x) => {
             output.push(
                 <p>
-                    <Link to={{pathname:'/article'}}
+                    <Link to={{pathname:'/article'}} replace
                           state={{articleID: i.id}}>
                         <img src={'http://localhost:8080/image/'+i.imageID} /> {i.title}
                     </Link>
