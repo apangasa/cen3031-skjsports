@@ -26,6 +26,12 @@ type Claims struct {
 }
 
 func Signin(w http.ResponseWriter, r *http.Request) {
+
+	// Set headers
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Content-Type", "application/json")
+
 	var writer Writer
 
 	err := json.NewDecoder(r.Body).Decode(&writer)
@@ -68,6 +74,11 @@ func Signin(w http.ResponseWriter, r *http.Request) {
 }
 
 func parser(w http.ResponseWriter, r *http.Request, claims *Claims) bool {
+	// Set headers
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Content-Type", "application/json")
+
 	cookie, err := r.Cookie("token")
 
 	if err != nil {
@@ -102,6 +113,12 @@ func parser(w http.ResponseWriter, r *http.Request, claims *Claims) bool {
 }
 
 func Auth(w http.ResponseWriter, r *http.Request) {
+
+	// Set headers
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Content-Type", "application/json")
+
 	claims := &Claims{}
 
 	if parser(w, r, claims) {
@@ -110,6 +127,11 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 }
 
 func Renew(w http.ResponseWriter, r *http.Request) {
+	// Set headers
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Content-Type", "application/json")
+
 	claims := &Claims{}
 
 	if parser(w, r, claims) {
@@ -141,6 +163,11 @@ func Renew(w http.ResponseWriter, r *http.Request) {
 }
 
 func createWriterAccount(w http.ResponseWriter, r *http.Request) {
+	// Set headers
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Content-Type", "application/json")
+
 	var writer Writer
 	err := json.NewDecoder(r.Body).Decode(&writer)
 
@@ -159,6 +186,11 @@ func createWriterAccount(w http.ResponseWriter, r *http.Request) {
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {
+	// Set headers
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Content-Type", "application/json")
+
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   "",
