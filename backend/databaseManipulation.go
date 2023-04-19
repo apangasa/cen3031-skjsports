@@ -178,7 +178,7 @@ func addDraftToDatabase(title string, content string, author_email string) strin
 
 	draft := Article{ID: article_id, Title: title, Content: content, Author: author.Author, AuthorEmail: author_email}
 
-	result = db.Create(&draft)
+	db.Create(&draft)
 
 	return article_id
 }
