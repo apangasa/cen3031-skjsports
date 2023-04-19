@@ -140,7 +140,7 @@ func Renew(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func addWriter(w http.ResponseWriter, r *http.Request) {
+func createWriterAccount(w http.ResponseWriter, r *http.Request) {
 	var writer Writer
 	err := json.NewDecoder(r.Body).Decode(&writer)
 

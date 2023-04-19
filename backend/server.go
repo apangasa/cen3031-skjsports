@@ -408,6 +408,35 @@ func publishDraft(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func addWriter(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		fmt.Println("New POST request received for new writer.")
+
+		// Set headers
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Content-Type", "application/json")
+
+		defer r.Body.Close()
+		body, _ := ioutil.ReadAll(r.Body)
+
+		bodyMap := make(map[string]string)
+		json.Unmarshal(body, &bodyMap)
+
+		success := addAuthor(bodyMap["author"], bodyMap["author_email"])
+
+		if success {
+			w.WriteHeader(http.StatusOK)
+		} else {
+			w.WriteHeader(http.StatusNotModified) // author already exists
+		}
+
+	} else {
+		fmt.Fprintf(w, "Unsupported request type.")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+	}
+}
+
 func main() {
 	http.HandleFunc("/", defaultRoute)
 	http.HandleFunc("/article", getArticle)
@@ -425,13 +454,13 @@ func main() {
 	http.HandleFunc("/publish-draft", publishDraft)
 	http.HandleFunc("/draft", getDraft)
 	http.HandleFunc("/drafts", getDraftsByAuthor)
+	http.HandleFunc("/add-writer", addWriter)
 
 	// Login-Related
 	http.HandleFunc("/signin", Signin)
 	http.HandleFunc("/authenticate", Auth)
 	http.HandleFunc("/renew", Renew)
-	http.HandleFunc("/addWriter", addWriter)
-
+	http.HandleFunc("/createWriterAccount", createWriterAccount)
 	http.HandleFunc("/logout", Logout)
 
 	fmt.Printf("Starting server at port 8080\n")

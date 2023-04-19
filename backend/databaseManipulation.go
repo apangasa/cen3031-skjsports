@@ -243,3 +243,30 @@ func convertDraftToArticle(article_id string) bool {
 
 	return true
 }
+
+func addAuthor(name string, email string) bool {
+	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	author_id := shortID(16)
+	test_author := Author{ID: author_id}
+	result := db.First(&test_author)
+	for result.Error != gorm.ErrRecordNotFound {
+		author_id := shortID(16)
+		test_author := Article{ID: author_id}
+		result = db.First(&test_author)
+	}
+
+	author := Author{ID: author_id, Author: name, AuthorEmail: email}
+
+	result = db.Create(&author)
+
+	if result.RowsAffected != 0 {
+		return true
+	} else {
+		return false
+	}
+}
