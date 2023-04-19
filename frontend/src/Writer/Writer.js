@@ -3,12 +3,16 @@ import {useState, useEffect} from 'react'
 import {useLocation} from "react-router-dom";
 import WriteImage from "./WriteImage";
 import WriteText from "./WriteText";
-
+import axios from 'axios';
 function Writer(props) {
 
 
     const [image, setImage] = useState(null)
     const [draftState, setDraftState] = useState({loading:true, objects:[]})
+    const token = localStorage.getItem("token");
+    if (token) {
+        setAuthToken(token);
+    }
     let id = useLocation().state.id
     const handleImageAdd = (i) => {
         let temp = draftState.objects
@@ -104,5 +108,31 @@ function AddObject(props) {
     )
 }
 
+const setAuthToken = token => {
+    if (token) {
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    }
+    else
+        delete axios.defaults.headers.common["Authorization"];
+}
 
+function handleLogin(email, pass) {
+//reqres registered sample user
+    const loginPayload = {
+        email: 'eve.holt@reqres.in',
+        password: 'cityslicka'
+    }
+
+    axios.post("https://reqres.in/api/login", loginPayload)
+        .then(response => {
+            //get token from response
+            const token = response.data.token;
+
+            //set JWT token to local
+            localStorage.setItem("token", token);
+
+            //set token to axios common header
+            setAuthToken(token);
+    })
+}
 export default Writer;
