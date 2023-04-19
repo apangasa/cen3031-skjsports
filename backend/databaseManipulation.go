@@ -180,7 +180,7 @@ func addDraftToDatabase(title string, content string, author_email string) strin
 	author := new(Author)
 	db.Where("author_email = ?", author_email).First(&author)
 
-	draft := Article{ID: article_id, Title: title, Content: content, Author: author.Author, AuthorEmail: author_email}
+	draft := Article{ID: article_id, Title: title, Content: content, Author: author.Author, AuthorEmail: author_email, IsDraft: 1}
 
 	db.Create(&draft)
 
@@ -196,7 +196,7 @@ func updateDraftInDatabase(article_id string, content string) bool {
 
 	draft := Article{ID: article_id}
 
-	result := db.First(&draft)
+	result := db.Where("is_draft = ?", 1).First(&draft)
 
 	if result.Error == gorm.ErrRecordNotFound {
 		return false
@@ -217,7 +217,7 @@ func convertDraftToArticle(article_id string) bool {
 
 	draft := Article{ID: article_id}
 
-	result := db.First(&draft)
+	result := db.Where("is_draft = ?", 1).First(&draft)
 
 	if result.Error == gorm.ErrRecordNotFound {
 		return false
