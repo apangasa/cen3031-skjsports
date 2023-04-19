@@ -28,8 +28,40 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		w.Header().Set("Content-Type", "application/json")
 
-		id := r.URL.Query().Get("id")        // Access query param
-		result := getArticleContentsByID(id) // retrieve article as list of content elements (text/image)
+		id := r.URL.Query().Get("id")               // Access query param
+		result := getArticleContentsByID(id, false) // retrieve article as list of content elements (text/image)
+
+		if result == nil {
+			w.WriteHeader(http.StatusNotFound)
+		} else {
+			jsonRes, err := json.Marshal(result)
+
+			if err != nil {
+				log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+				w.WriteHeader(http.StatusInternalServerError)
+				w.Write(jsonRes)
+			} else {
+				w.WriteHeader(http.StatusOK)
+				w.Write(jsonRes)
+			}
+		}
+	} else {
+		fmt.Fprintf(w, "Unsupported request type.")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+	}
+}
+
+func getDraft(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		fmt.Println("New GET request received for article retrieval.")
+
+		// Set headers
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Content-Type", "application/json")
+
+		id := r.URL.Query().Get("id")              // Access query param
+		result := getArticleContentsByID(id, true) // retrieve article as list of content elements (text/image)
 
 		if result == nil {
 			w.WriteHeader(http.StatusNotFound)
@@ -60,8 +92,33 @@ func getArticlesByAuthor(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		w.Header().Set("Content-Type", "application/json")
 
-		id := r.URL.Query().Get("author_id")   // Access query param
-		res := getArticlesMatchingAuthorId(id) // TODO replace with getting articles with matching article id
+		id := r.URL.Query().Get("author_id")          // Access query param
+		res := getArticlesMatchingAuthorId(id, false) // TODO replace with getting articles with matching article id
+
+		jsonRes, err := json.Marshal(res)
+
+		if err != nil {
+			log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+		}
+
+		w.Write(jsonRes)
+	} else {
+		fmt.Fprintf(w, "Unsupported request type.")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+	}
+}
+
+func getDraftsByAuthor(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		fmt.Println("New GET request received for article retrieval by author.")
+
+		// Set headers
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Content-Type", "application/json")
+
+		id := r.URL.Query().Get("author_id")         // Access query param
+		res := getArticlesMatchingAuthorId(id, true) // TODO replace with getting articles with matching article id
 
 		jsonRes, err := json.Marshal(res)
 
@@ -143,7 +200,7 @@ func getSearchResults(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
 		search := r.URL.Query().Get("search")
-		res := getArticlesMatchingSearch(search)
+		res := getArticlesMatchingSearch(search, false)
 
 		jsonRes, err := json.Marshal(res)
 
@@ -252,6 +309,9 @@ func main() {
 	http.HandleFunc("/stats/team", getTeamStats)
 
 	http.HandleFunc("/create-draft", createDraft)
+
+	http.HandleFunc("/draft", getArticle)
+	http.HandleFunc("/drafts", getArticlesByAuthor)
 
 	http.HandleFunc("/signin", Signin)
 	http.HandleFunc("/authenticate", Auth)
