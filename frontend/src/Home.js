@@ -5,7 +5,7 @@ function Home() {
     //State
     const [articles, setArticles] = useState(null);
     useEffect(() => {
-                fetch('http://localhost:5001/articleList')
+                fetch('http://localhost:8080/article')
                     .then(response => response.json())
                     .then(result => setArticles(result.list))
 
@@ -20,7 +20,7 @@ function Home() {
                 <p>
                     <Link to={{pathname:'/article'}}
                     state={{articleID: i.articleID}}>
-                        <img src={'http://localhost:5001/image/'+i.imageID} /> {i.title}
+                        <img src={'http://localhost:8080/image/'+i.imageID} /> {i.title}
                     </Link>
                 </p>)
         })
