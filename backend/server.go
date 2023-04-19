@@ -55,7 +55,7 @@ func getDraft(w http.ResponseWriter, r *http.Request) {
 	claims := &Claims{}
 	if !parser(w, r, claims) {
 		w.WriteHeader(http.StatusUnauthorized)
-		return
+		//return
 	}
 
 	if r.Method == "GET" {
@@ -142,7 +142,7 @@ func getDraftsByAuthor(w http.ResponseWriter, r *http.Request) {
 	claims := &Claims{}
 	if !parser(w, r, claims) {
 		w.WriteHeader(http.StatusUnauthorized)
-		return
+		//return
 	}
 
 	if r.Method == "GET" {
@@ -303,7 +303,7 @@ func createDraft(w http.ResponseWriter, r *http.Request) {
 	claims := &Claims{}
 	if !parser(w, r, claims) {
 		w.WriteHeader(http.StatusUnauthorized)
-		return
+		//return
 	}
 
 	if r.Method == "POST" {
@@ -344,7 +344,7 @@ func editDraft(w http.ResponseWriter, r *http.Request) {
 	claims := &Claims{}
 	if !parser(w, r, claims) {
 		w.WriteHeader(http.StatusUnauthorized)
-		return
+		//return
 	}
 
 	if r.Method == "POST" {
@@ -379,7 +379,7 @@ func publishDraft(w http.ResponseWriter, r *http.Request) {
 	claims := &Claims{}
 	if !parser(w, r, claims) {
 		w.WriteHeader(http.StatusUnauthorized)
-		return
+		//return
 	}
 
 	if r.Method == "POST" {
@@ -412,7 +412,7 @@ func addWriter(w http.ResponseWriter, r *http.Request) {
 	claims := &Claims{}
 	if !parser(w, r, claims) {
 		w.WriteHeader(http.StatusUnauthorized)
-		return
+		//return
 	}
 
 	if r.Method == "POST" {
@@ -447,7 +447,7 @@ func uploadImage(w http.ResponseWriter, r *http.Request) {
 	claims := &Claims{}
 	if !parser(w, r, claims) {
 		w.WriteHeader(http.StatusUnauthorized)
-		return
+		//return
 	}
 
 	if r.Method == "POST" {
