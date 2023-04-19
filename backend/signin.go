@@ -107,8 +107,6 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 	if parser(w, r, claims) {
 		w.Write([]byte(fmt.Sprintf("Welcome to SKJ Sports %s!", claims.username)))
 	}
-
-	return
 }
 
 func Renew(w http.ResponseWriter, r *http.Request) {
