@@ -63,7 +63,7 @@ func searchDatabaseForArticles(search string) []Article {
 	}
 
 	//db.First(&articles, "title = ?", search)
-	db.Raw("SELECT id, title FROM articles WHERE title LIKE '%" + search + "%'").Scan(&articles)
+	db.Raw("SELECT id, title FROM articles WHERE is_draft = '0' AND title LIKE '%" + search + "%'").Scan(&articles)
 
 	return articles
 
