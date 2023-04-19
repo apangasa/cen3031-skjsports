@@ -1,13 +1,9 @@
 import Home from "../Home";
 import {useState, useEffect} from 'react'
-import {useLocation} from "react-router-dom";
-function WriteImage(props) {
-    const [text, setText] = useState("")
-    useEffect(() => {
-        fetch('http://localhost:5001/draftBoard/')
-            .then(response => response.json())
-            .then(result => setText(result.txt))
-    },[])
+import { useLocation } from 'react-router-dom';
+
+function WriteText(props) {
+    const [text, setText] = useState(props.textProps)
     const onTextChange = (event) => {
         if (event.target.value) {
             setText(event.target.value);
@@ -16,9 +12,9 @@ function WriteImage(props) {
 
     return (
         <div>
-            <input type="text" onChange={onTextChange} className="textType" />
+            <input type="text" onChange={onTextChange} className="textType" value={text} style={{width: "80%"}}/>
         </div>
     )
 }
 
-export default WriteImage;
+export default WriteText;

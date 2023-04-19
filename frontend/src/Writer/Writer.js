@@ -2,10 +2,27 @@ import Home from "../Home";
 import {useState, useEffect} from 'react'
 import {useLocation} from "react-router-dom";
 import WriteImage from "./WriteImage";
+import WriteText from "./WriteText";
+
 function Writer(props) {
+
+
     const [image, setImage] = useState(null)
     const [draftState, setDraftState] = useState({loading:true, objects:[]})
     let id = useLocation().state.id
+    const handleImageAdd = (i) => {
+        let temp = draftState.objects
+        temp.splice(i, 0, {contentType: 'img'})
+        setDraftState({loading:false, objects:temp})
+    }
+    function handleTextAdd(i)  {
+        console.log("text add2")
+        console.log(i)
+        let temp = draftState.objects
+        console.log(draftState)
+        temp.splice(i, 0, {contentType: 'text'})
+        setDraftState({loading:false, objects:temp})
+    }
     useEffect(() => {
         console.log("effect")
         if (!draftState.loading) {
@@ -32,19 +49,27 @@ function Writer(props) {
             </div>
         )
     }
+
+
     else if (draftState.objects.length > 0) {
+
         return (
             <div>
+                <button onClick={() => {console.log("upload")}} > Upload</button>
                 {(() => {
                     const objects = [];
 
                     for (let i = 0; i<length; i++) {
-                        if (draftState.objects[i].type=='img')
-                        objects.push(<WriteImage value={i}>{i}</WriteImage>);
+                        objects.push(< AddObject count={i} handleImageAdd={handleImageAdd} handleTextAdd={handleTextAdd}/>)
+                        if (draftState.objects[i].contentType=='img')
+                        objects.push(<WriteImage imageProps={draftState.objects[i].id}></WriteImage>);
+                        else if(draftState.objects[i].contentType=='text')
+                            objects.push(<WriteText textProps={draftState.objects[i].text}></WriteText>)
                     }
 
                     return objects;
                 })()}
+                < AddObject count={length} handleImageAdd={handleImageAdd} handleTextAdd={handleTextAdd}/>
             </div>
         )
     }
@@ -52,24 +77,27 @@ function Writer(props) {
         console.log("empt")
         return (
             <div>
-                <h2>Article Title: {id}</h2>
-                <input type="file"  className="filetype" />
-                <img alt="preview image" src={image}/>
+                <h2>Article Title: {id}
+                    <input type="text"  className="title" /> </h2>
+                < AddObject count={0} handleImageAdd={handleImageAdd} handleTextAdd={handleTextAdd}/>
             </div>
         )
     }
 }
 
-function AddObject() {
+function AddObject(props) {
+    console.log(props)
+    let id = props.count
+    const handleImageAdd = () => {
+        props.handleImageAdd(id)
+    }
+
     return (
-        <div>
-            <button>
+        <div id={id}>
+            <button onClick = {() => handleImageAdd(id)}>
                 Add Image
             </button>
-            <button>
-                Add Heading
-            </button>
-            <button>
+            <button onClick = {() => props.handleTextAdd(id)}>
                 Add Text
             </button>
         </div>
