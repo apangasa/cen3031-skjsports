@@ -299,3 +299,21 @@ func addImage(encoding string) string {
 
 	return image_id
 }
+
+func retrieveImage(image_id string) *Image {
+	image := new(Image)
+
+	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	result := db.First(&image, "id = ?", image_id)
+
+	if result.Error == gorm.ErrRecordNotFound {
+		return nil // if record not found
+	}
+
+	return image
+}
