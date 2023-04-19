@@ -156,3 +156,29 @@ func retrieveSubscriber(email string) *Subscriber {
 
 	return subscriber
 }
+
+func addDraftToDatabase(title string, content string, author_email string) string {
+	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	article_id := shortID(16)
+	test_article := Article{ID: article_id}
+	result := db.First(&test_article)
+	for result.Error != gorm.ErrRecordNotFound {
+		article_id := shortID(16)
+		test_article := Article{ID: article_id}
+		result = db.First(&test_article)
+	}
+
+	author := new(Author)
+	db.Where("author_email = ?", author_email).First(&author)
+
+	draft := Article{ID: article_id, Title: title, Content: content, Author: author.Author, AuthorEmail: author_email}
+
+	result = db.Create(&draft)
+
+	return article_id
+}
