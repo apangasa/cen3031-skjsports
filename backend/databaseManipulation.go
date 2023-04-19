@@ -7,10 +7,12 @@ import (
 
 type Article struct {
 	gorm.Model
-	ID        string `gorm:"primaryKey"`
-	Title     string
-	Content   string
-	TestEntry int
+	ID          string `gorm:"primaryKey"`
+	Title       string
+	Content     string
+	Author      string
+	AuthorEmail string
+	IsDraft     int
 }
 
 type Subscriber struct {
