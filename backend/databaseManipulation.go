@@ -22,6 +22,13 @@ type Subscriber struct {
 	LastName  string
 }
 
+type Author struct {
+	gorm.Model
+	ID          string `gorm:"primaryKey"`
+	Author      string
+	AuthorEmail string
+}
+
 func retrieveArticle(article_id string) *Article {
 	article := new(Article)
 
