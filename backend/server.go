@@ -52,6 +52,12 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 }
 
 func getDraft(w http.ResponseWriter, r *http.Request) {
+	claims := &Claims{}
+	if !parser(w, r, claims) {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
 	if r.Method == "GET" {
 		fmt.Println("New GET request received for article retrieval.")
 
@@ -109,6 +115,12 @@ func getArticlesByAuthor(w http.ResponseWriter, r *http.Request) {
 }
 
 func getDraftsByAuthor(w http.ResponseWriter, r *http.Request) {
+	claims := &Claims{}
+	if !parser(w, r, claims) {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
 	if r.Method == "GET" {
 		fmt.Println("New GET request received for article retrieval by author.")
 
@@ -264,6 +276,12 @@ func getTeamStats(w http.ResponseWriter, r *http.Request) {
 }
 
 func createDraft(w http.ResponseWriter, r *http.Request) {
+	claims := &Claims{}
+	if !parser(w, r, claims) {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
 	if r.Method == "POST" {
 		fmt.Println("New GET request received for player stats.")
 
@@ -299,6 +317,12 @@ func createDraft(w http.ResponseWriter, r *http.Request) {
 }
 
 func editDraft(w http.ResponseWriter, r *http.Request) {
+	claims := &Claims{}
+	if !parser(w, r, claims) {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
 	if r.Method == "POST" {
 		fmt.Println("New GET request received for player stats.")
 
@@ -328,6 +352,12 @@ func editDraft(w http.ResponseWriter, r *http.Request) {
 }
 
 func publishDraft(w http.ResponseWriter, r *http.Request) {
+	claims := &Claims{}
+	if !parser(w, r, claims) {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
 	if r.Method == "POST" {
 		fmt.Println("New GET request received for player stats.")
 
@@ -364,13 +394,14 @@ func main() {
 	http.HandleFunc("/stats/player", getPlayerStats)
 	http.HandleFunc("/stats/team", getTeamStats)
 
-	// Login Protected
+	// Require Authentication
 	http.HandleFunc("/create-draft", createDraft)
 	http.HandleFunc("/edit-draft", editDraft)
 	http.HandleFunc("/publish-draft", publishDraft)
 	http.HandleFunc("/draft", getDraft)
 	http.HandleFunc("/drafts", getDraftsByAuthor)
 
+	// Login-Related
 	http.HandleFunc("/signin", Signin)
 	http.HandleFunc("/authenticate", Auth)
 	http.HandleFunc("/renew", Renew)
