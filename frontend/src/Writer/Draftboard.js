@@ -1,6 +1,8 @@
 import Home from "../Home";
 import {useState, useEffect} from 'react'
 import {Link} from "react-router-dom";
+import AuthService from './auth.js';
+import Login from './Login'
 function Draftboard(props) {
     const [data, setData] = useState(null);
     console.log("DRAFTBOARD")
@@ -23,6 +25,15 @@ function Draftboard(props) {
         }
     }
     console.log(output)
+    let user = AuthService.getCurrentUser()
+    console.log("user")
+    console.log(user)
+    if (!user) {
+        console.log("user")
+        return (
+            <Login />
+        )
+    }
     if (output.length == 0) {
         return(
             <>Loading!</>
