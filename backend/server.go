@@ -327,6 +327,33 @@ func editDraft(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func publishDraft(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		fmt.Println("New GET request received for player stats.")
+
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Content-Type", "application/json")
+
+		defer r.Body.Close()
+		body, _ := ioutil.ReadAll(r.Body)
+
+		var bodyMap JsonMap
+		json.Unmarshal(body, &bodyMap)
+
+		success := convertDraftToArticle(bodyMap["article_id"].(string))
+
+		if success {
+			w.WriteHeader(http.StatusOK)
+		} else {
+			w.WriteHeader(http.StatusBadRequest) // id does not exist
+		}
+
+	} else {
+		fmt.Fprintf(w, "Unsupported request type.")
+	}
+}
+
 func main() {
 	http.HandleFunc("/", defaultRoute)
 	http.HandleFunc("/article", getArticle)
@@ -339,6 +366,7 @@ func main() {
 
 	http.HandleFunc("/create-draft", createDraft)
 	http.HandleFunc("/edit-draft", editDraft)
+	http.HandleFunc("/publish-draft", publishDraft)
 
 	http.HandleFunc("/draft", getArticle)
 	http.HandleFunc("/drafts", getArticlesByAuthor)
