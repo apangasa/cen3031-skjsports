@@ -63,7 +63,7 @@ func retrieveAuthorArticles(author_id string) []Article {
 		return nil
 	}
 
-	db.Where("author_email = ?", author.AuthorEmail).Find(&articles)
+	db.Where("author_email = ? AND is_draft = ?", author.AuthorEmail, "0").Find(&articles)
 
 	return articles
 }
