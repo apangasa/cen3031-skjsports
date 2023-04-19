@@ -31,7 +31,7 @@ func retrieveArticle(article_id string) *Article {
 		panic("failed to connect database")
 	}
 
-	result := db.First(&article, "id = ?", article_id)
+	result := db.Where("is_draft = ?", "0").First(&article, "id = ?", article_id)
 
 	if result.Error == gorm.ErrRecordNotFound {
 		return nil // if record not found
