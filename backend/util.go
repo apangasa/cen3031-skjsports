@@ -89,8 +89,10 @@ func processArticle(articleObj *Article) JsonMap {
 	contentList = append(contentList, contentMap)
 
 	res := JsonMap{
-		"title":   articleObj.Title,
-		"content": contentList,
+		"title":        articleObj.Title,
+		"content":      contentList,
+		"author":       articleObj.Author,
+		"author_email": articleObj.AuthorEmail,
 	}
 
 	return res
