@@ -13,6 +13,7 @@ type Article struct {
 	Author      string
 	AuthorEmail string
 	IsDraft     int
+	ImageId     string
 }
 
 type Subscriber struct {
@@ -27,6 +28,12 @@ type Author struct {
 	ID          string `gorm:"primaryKey"`
 	Author      string
 	AuthorEmail string
+}
+
+type Image struct {
+	gorm.Model
+	ID       string `gorm:"primaryKey"`
+	Encoding string
 }
 
 func retrieveArticle(article_id string, is_draft int) *Article {
@@ -241,4 +248,72 @@ func convertDraftToArticle(article_id string) bool {
 	db.Save(&draft)
 
 	return true
+}
+
+func addAuthor(name string, email string) bool {
+	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	author_id := shortID(16)
+	test_author := Author{ID: author_id}
+	result := db.First(&test_author)
+	for result.Error != gorm.ErrRecordNotFound {
+		author_id := shortID(16)
+		test_author := Article{ID: author_id}
+		result = db.First(&test_author)
+	}
+
+	author := Author{ID: author_id, Author: name, AuthorEmail: email}
+
+	result = db.Create(&author)
+
+	if result.RowsAffected != 0 {
+		return true
+	} else {
+		return false
+	}
+}
+
+func addImage(encoding string) string {
+	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	image_id := shortID(16)
+	test_image := Image{ID: image_id}
+	result := db.First(&test_image)
+	for result.Error != gorm.ErrRecordNotFound {
+		image_id := shortID(16)
+		test_image := Article{ID: image_id}
+		result = db.First(&test_image)
+	}
+
+	image := Image{ID: image_id, Encoding: encoding}
+
+	db.Create(&image)
+
+	return image_id
+}
+
+func retrieveImage(image_id string) *Image {
+	image := new(Image)
+
+	db, err := gorm.Open(sqlite.Open("skjsports.db"), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	result := db.First(&image, "id = ?", image_id)
+
+	if result.Error == gorm.ErrRecordNotFound {
+		return nil // if record not found
+	}
+
+	return image
 }
