@@ -92,7 +92,7 @@
 }
 
 .button:hover {
-    background: rgb(36, 100, 251);
+    background: rgb(251, 186, 36);
     transition: all 0.3s ease;
 }
 
