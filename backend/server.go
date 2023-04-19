@@ -206,6 +206,41 @@ func getTeamStats(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func createDraft(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		fmt.Println("New GET request received for player stats.")
+
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Content-Type", "application/json")
+
+		defer r.Body.Close()
+		body, _ := ioutil.ReadAll(r.Body)
+
+		var bodyMap JsonMap
+		json.Unmarshal(body, &bodyMap)
+
+		content := wrapArticleContents(bodyMap["content"].([]map[string]string))
+
+		article_id := addDraftToDatabase(bodyMap["title"].(string), content, bodyMap["author_email"].(string))
+
+		res := JsonMap{
+			"article_id": article_id,
+		}
+
+		jsonRes, err := json.Marshal(res)
+
+		if err != nil {
+			log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+		}
+
+		w.Write(jsonRes)
+
+	} else {
+		fmt.Fprintf(w, "Unsupported request type.")
+	}
+}
+
 func main() {
 	http.HandleFunc("/", defaultRoute)
 	http.HandleFunc("/article", getArticle)
@@ -215,6 +250,8 @@ func main() {
 	http.HandleFunc("/unsubscribe", unsubscribe)
 	http.HandleFunc("/stats/player", getPlayerStats)
 	http.HandleFunc("/stats/team", getTeamStats)
+
+	http.HandleFunc("/create-draft", createDraft)
 
 	http.HandleFunc("/signin", Signin)
 	http.HandleFunc("/authenticate", Auth)
