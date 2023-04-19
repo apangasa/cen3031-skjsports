@@ -1,11 +1,24 @@
 package main
 
 import (
+	"crypto/rand"
 	"regexp"
 	"strings"
 )
 
 type JsonMap map[string]interface{}
+
+var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-"
+
+func shortID(length int) string {
+	ll := len(chars)
+	b := make([]byte, length)
+	rand.Read(b) // generates len(b) random bytes
+	for i := 0; i < length; i++ {
+		b[i] = chars[int(b[i])%ll]
+	}
+	return string(b)
+}
 
 func getArticleContentsByID(id string) JsonMap {
 	articleObj := retrieveArticle(id) // Get struct of Article by querying DB
@@ -16,6 +29,22 @@ func getArticleContentsByID(id string) JsonMap {
 
 	result := processArticle(articleObj) // Dissect article into text and image content list
 	return result
+}
+
+func wrapArticleContents(contentList []map[string]string) string {
+	content := ""
+
+	for i := 0; i < len(contentList); i++ {
+		if contentList[i]["contentType"] == "text" {
+			content += contentList[i]["text"]
+		} else if contentList[i]["contentType"] == "img" {
+			content += "<image " + contentList[i]["id"] + ">"
+		} else {
+			content += "" // unrecognized element
+		}
+	}
+
+	return content
 }
 
 func processArticle(articleObj *Article) JsonMap {
