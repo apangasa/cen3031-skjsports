@@ -7,9 +7,9 @@ function Draftboard(props) {
     const [data, setData] = useState(null);
     console.log("DRAFTBOARD")
     useEffect(() => {
-        fetch('http://localhost:8080/draftBoard/')
+        fetch('http://localhost:8080/drafts?author_id=7')
             .then(response => response.json())
-            .then(result => setData(result.list))
+            .then(result => setData(result.results))
     },[])
     const output = []
     console.log(data)
@@ -45,7 +45,7 @@ function Draftboard(props) {
                 <h1>Drafts</h1>
                 {output}
 
-                <Link to={"/edit"}
+                <Link to={"/draft"}
                       state={{id:null}}>
                     Create New Article
                 </Link>

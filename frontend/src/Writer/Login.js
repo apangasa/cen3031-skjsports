@@ -31,7 +31,7 @@ function Login(props) {
         e.preventDefault();
 
 
-
+        console.log("login")
         AuthService.login(user.username, user.password).then(
             () => {
                 this.props.router.navigate("/write");
@@ -64,7 +64,7 @@ function Login(props) {
             <div className="card card-container">
 
                 <button
-                    onSubmit={() => handleLogin}
+                    onClick={handleLogin}
 
                 > login </button>
                     <div className="form-group">
@@ -73,8 +73,7 @@ function Login(props) {
                             type="text"
                             className="form-control"
                             name="username"
-                            value={user.username}
-                            onChange={() => onChangeUsername}
+                            onChange={onChangeUsername}
                         />
                     </div>
                     <div className="form-group">
@@ -83,22 +82,10 @@ function Login(props) {
                             type="password"
                             className="form-control"
                             name="password"
-                            value={user.password}
-                            onChange={() => onChangePassword}
+                            onChange={onChangePassword}
                         />
                     </div>
 
-                    <div className="form-group">
-                        <button
-                            className="btn btn-primary btn-block"
-                            disabled={user.loading}
-                        >
-                            {user.loading && (
-                                <span className="spinner-border spinner-border-sm"></span>
-                            )}
-                            <span>Login</span>
-                        </button>
-                    </div>
 
                     {user.message && (
                         <div className="form-group">
@@ -106,15 +93,14 @@ function Login(props) {
                                 {user.message}
                             </div>
                         </div>
-                    )}
-                    <button
-                        style={{ display: "none" }}
-
-                    > check </button>
+                        )}
             </div>
         </div>
     );
 
 }
+
+
+
 
 export default Login;

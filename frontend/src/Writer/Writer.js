@@ -4,19 +4,23 @@ import {useLocation} from "react-router-dom";
 import WriteImage from "./WriteImage";
 import WriteText from "./WriteText";
 import axios from 'axios';
+import setA from './auth'
 function Writer(props) {
 
 
     const [image, setImage] = useState(null)
     const [draftState, setDraftState] = useState({loading:true, objects:[]})
     const token = localStorage.getItem("token");
-    if (token) {
-        setAuthToken(token);
-    }
+
     let id = useLocation().state.id
     const handleImageAdd = (i) => {
+        console.log("text add2")
+        console.log(i)
         let temp = draftState.objects
-        temp.splice(i, 0, {contentType: 'img'})
+        console.log(draftState)
+        temp.content.splice(i, 0, {contentType: 'img', 'img': ""})
+        console.log(temp)
+
         setDraftState({loading:false, objects:temp})
     }
     function handleTextAdd(i)  {
@@ -24,27 +28,43 @@ function Writer(props) {
         console.log(i)
         let temp = draftState.objects
         console.log(draftState)
-        temp.splice(i, 0, {contentType: 'text'})
+        temp.content.splice(i, 0, {contentType: 'text', 'text': ""})
+        console.log(temp)
+
         setDraftState({loading:false, objects:temp})
     }
+    const handleSubmit = (i) => {
+        let data = {'article_id':'4', 'author_email': draftState.objects.author_email, 'content': draftState.objects.content}
+        console.log(data)
+        fetch('http://localhost:8080/edit-draft', {
+            method: "POST", // *GET, POST, PUT, DELETE, etc.
+                referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                body: JSON.stringify(data), // body data type must match "Content-Type" header
+        });
+    }
+
     useEffect(() => {
         console.log("effect")
         if (!draftState.loading) {
 
         }
         else if (draftState.objects.length > 0) {
-            setDraftState({loading:false, objects:draftState.objects})
         }
         else if (id==null) {
             setDraftState({loading:false, objects:[]});
         }
         else {
-            fetch('http://localhost:5001/drafts/' + id)
+            fetch('http://localhost:8080/draft?id=4') // + id
                 .then(response => response.json())
-                .then(result => setDraftState({loading: false, objects:result.list}))
+                .then(result => setDraftState({loading: false, objects:result}))
         }
         },[draftState])
-    let length = draftState.objects.length
+    let length = draftState.objects
+    if (length.content) {
+        length = length.content.length
+    }
+    console.log("length")
+    console.log(length)
     if (draftState.loading) {
         console.log("loading")
         return (
@@ -55,25 +75,28 @@ function Writer(props) {
     }
 
 
-    else if (draftState.objects.length > 0) {
+    else if (length > 0) {
 
         return (
             <div>
-                <button onClick={() => {console.log("upload")}} > Upload</button>
+                    <p><h2>Article Title:
+                        <input type="text"  className="title" value={draftState.objects.title}/> </h2> </p>
                 {(() => {
                     const objects = [];
 
                     for (let i = 0; i<length; i++) {
                         objects.push(< AddObject count={i} handleImageAdd={handleImageAdd} handleTextAdd={handleTextAdd}/>)
-                        if (draftState.objects[i].contentType=='img')
-                        objects.push(<WriteImage imageProps={draftState.objects[i].id}></WriteImage>);
-                        else if(draftState.objects[i].contentType=='text')
-                            objects.push(<WriteText textProps={draftState.objects[i].text}></WriteText>)
+                        if (draftState.objects.content[i].contentType=='img')
+                        objects.push(<WriteImage imageProps={draftState.objects.content[i].id}></WriteImage>);
+                        else if (draftState.objects.content[i].contentType=='text')
+                            objects.push(<WriteText textProps={draftState.objects.content[i].text}></WriteText>)
                     }
 
                     return objects;
                 })()}
                 < AddObject count={length} handleImageAdd={handleImageAdd} handleTextAdd={handleTextAdd}/>
+                <button onClick={handleSubmit} > Upload</button>
+
             </div>
         )
     }
@@ -81,8 +104,8 @@ function Writer(props) {
         console.log("empt")
         return (
             <div>
-                <h2>Article Title: {id}
-                    <input type="text"  className="title" /> </h2>
+                <p><h2>Article Title:
+                    <input type="text"  className="title" value={draftState.objects.title}/> </h2> </p>
                 < AddObject count={0} handleImageAdd={handleImageAdd} handleTextAdd={handleTextAdd}/>
             </div>
         )
@@ -108,31 +131,6 @@ function AddObject(props) {
     )
 }
 
-const setAuthToken = token => {
-    if (token) {
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    }
-    else
-        delete axios.defaults.headers.common["Authorization"];
-}
 
-function handleLogin(email, pass) {
-//reqres registered sample user
-    const loginPayload = {
-        email: 'eve.holt@reqres.in',
-        password: 'cityslicka'
-    }
 
-    axios.post("https://reqres.in/api/login", loginPayload)
-        .then(response => {
-            //get token from response
-            const token = response.data.token;
-
-            //set JWT token to local
-            localStorage.setItem("token", token);
-
-            //set token to axios common header
-            setAuthToken(token);
-    })
-}
 export default Writer;
