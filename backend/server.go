@@ -52,11 +52,7 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 }
 
 func getDraft(w http.ResponseWriter, r *http.Request) {
-	claims := &Claims{}
-	if !parser(w, r, claims) {
-		//w.WriteHeader(http.StatusUnauthorized)
-		//return
-	}
+
 
 	if r.Method == "GET" {
 		fmt.Println("New GET request received for article retrieval.")
@@ -139,11 +135,7 @@ func getArticlesByAuthor(w http.ResponseWriter, r *http.Request) {
 }
 
 func getDraftsByAuthor(w http.ResponseWriter, r *http.Request) {
-	claims := &Claims{}
-	if !parser(w, r, claims) {
-		//w.WriteHeader(http.StatusUnauthorized)
-		//return
-	}
+
 
 	if r.Method == "GET" {
 		fmt.Println("New GET request received for article retrieval by author.")
@@ -300,11 +292,7 @@ func getTeamStats(w http.ResponseWriter, r *http.Request) {
 }
 
 func createDraft(w http.ResponseWriter, r *http.Request) {
-	claims := &Claims{}
-	if !parser(w, r, claims) {
-		//w.WriteHeader(http.StatusUnauthorized)
-		//return
-	}
+
 
 	if r.Method == "POST" {
 		fmt.Println("New GET request received for player stats.")
@@ -341,11 +329,7 @@ func createDraft(w http.ResponseWriter, r *http.Request) {
 }
 
 func editDraft(w http.ResponseWriter, r *http.Request) {
-	claims := &Claims{}
-	if !parser(w, r, claims) {
-		//w.WriteHeader(http.StatusUnauthorized)
-		//return
-	}
+
 
 	if r.Method == "POST" {
 		fmt.Println("New GET request received for player stats.")
@@ -376,11 +360,7 @@ func editDraft(w http.ResponseWriter, r *http.Request) {
 }
 
 func publishDraft(w http.ResponseWriter, r *http.Request) {
-	claims := &Claims{}
-	if !parser(w, r, claims) {
-		//w.WriteHeader(http.StatusUnauthorized)
-		//return
-	}
+
 
 	if r.Method == "POST" {
 		fmt.Println("New GET request received for player stats.")
@@ -409,11 +389,7 @@ func publishDraft(w http.ResponseWriter, r *http.Request) {
 }
 
 func addWriter(w http.ResponseWriter, r *http.Request) {
-	claims := &Claims{}
-	if !parser(w, r, claims) {
-		//w.WriteHeader(http.StatusUnauthorized)
-		//return
-	}
+
 
 	if r.Method == "POST" {
 		fmt.Println("New POST request received for new writer.")
@@ -444,11 +420,7 @@ func addWriter(w http.ResponseWriter, r *http.Request) {
 }
 
 func uploadImage(w http.ResponseWriter, r *http.Request) {
-	claims := &Claims{}
-	if !parser(w, r, claims) {
-		//w.WriteHeader(http.StatusUnauthorized)
-		//return
-	}
+
 
 	if r.Method == "POST" {
 		fmt.Println("New POST request received for new writer.")
