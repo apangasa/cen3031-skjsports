@@ -22,7 +22,7 @@ The following unit tests were necessary for backend behavior:
 ## Issues Completed
 On the frontend side, to finish up the project, we had to work on implementing the draft board ([See issue][i95]), adding various writer features ([See issue][i96]), and connecting the frontend and backend ([See issue][i97]). We were successful in completing these issues. However, the login system was unable to work properly. Regradless, the final product was not affected. The draft board was fully implemented, and the other writer features we wanted to add (edit, save, publish drafts) were implemented as well. We also had to actually design the blog ([See issue][i73]). This was the final step of our process, as we had to make the website look aesthetically pleasing, and attract potential readers. We were successfully able to do so, and managed to create the product we had envisioned at the start of this project. 
 
-On the backend side,
+On the backend side, we implemented login. We also added all draft-related behavior such as creating, editing, and publishing drafts. We added a concept of authors to articles and drafts. We also implemented image functionality with image upload and retrieval. Additionally, we wrapped up web scraping with adding in team-level stats.
 
 
 ## Backend API Documentation
