@@ -54,7 +54,7 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 func getDraft(w http.ResponseWriter, r *http.Request) {
 	claims := &Claims{}
 	if !parser(w, r, claims) {
-		w.WriteHeader(http.StatusUnauthorized)
+		//w.WriteHeader(http.StatusUnauthorized)
 		//return
 	}
 
@@ -141,7 +141,7 @@ func getArticlesByAuthor(w http.ResponseWriter, r *http.Request) {
 func getDraftsByAuthor(w http.ResponseWriter, r *http.Request) {
 	claims := &Claims{}
 	if !parser(w, r, claims) {
-		w.WriteHeader(http.StatusUnauthorized)
+		//w.WriteHeader(http.StatusUnauthorized)
 		//return
 	}
 
@@ -302,7 +302,7 @@ func getTeamStats(w http.ResponseWriter, r *http.Request) {
 func createDraft(w http.ResponseWriter, r *http.Request) {
 	claims := &Claims{}
 	if !parser(w, r, claims) {
-		w.WriteHeader(http.StatusUnauthorized)
+		//w.WriteHeader(http.StatusUnauthorized)
 		//return
 	}
 
@@ -343,7 +343,7 @@ func createDraft(w http.ResponseWriter, r *http.Request) {
 func editDraft(w http.ResponseWriter, r *http.Request) {
 	claims := &Claims{}
 	if !parser(w, r, claims) {
-		w.WriteHeader(http.StatusUnauthorized)
+		//w.WriteHeader(http.StatusUnauthorized)
 		//return
 	}
 
@@ -378,7 +378,7 @@ func editDraft(w http.ResponseWriter, r *http.Request) {
 func publishDraft(w http.ResponseWriter, r *http.Request) {
 	claims := &Claims{}
 	if !parser(w, r, claims) {
-		w.WriteHeader(http.StatusUnauthorized)
+		//w.WriteHeader(http.StatusUnauthorized)
 		//return
 	}
 
@@ -411,7 +411,7 @@ func publishDraft(w http.ResponseWriter, r *http.Request) {
 func addWriter(w http.ResponseWriter, r *http.Request) {
 	claims := &Claims{}
 	if !parser(w, r, claims) {
-		w.WriteHeader(http.StatusUnauthorized)
+		//w.WriteHeader(http.StatusUnauthorized)
 		//return
 	}
 
@@ -446,7 +446,7 @@ func addWriter(w http.ResponseWriter, r *http.Request) {
 func uploadImage(w http.ResponseWriter, r *http.Request) {
 	claims := &Claims{}
 	if !parser(w, r, claims) {
-		w.WriteHeader(http.StatusUnauthorized)
+		//w.WriteHeader(http.StatusUnauthorized)
 		//return
 	}
 
