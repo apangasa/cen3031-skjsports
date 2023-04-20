@@ -15,3 +15,7 @@ Our project will be a web application for the company, SKJ Sports. More specific
 
 ## API Documentation
 https://universal-crater-481750.postman.co/workspace/6185c94f-4893-4149-a166-29e01a85f960/api/e6f0ab7c-013c-4e89-b88e-f9d77a013bf7
+
+## How To Run 
+On the frontend side, to run and use the application, navigate to the frontend folder (CD) in the terminal, and type “npm install”. Then, inside the frontend folder, type “npm run start”. This should start the live server, and the application will be running. For the backend, navigate to the backend folder (CD), then type "go install". Then, type "go run .". 
+
