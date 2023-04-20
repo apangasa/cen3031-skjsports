@@ -15,6 +15,10 @@
 ## Unit Tests
 The following unit tests were necessary for frontend behavior: 
 - Testing the draft board
+- Testing subscription button
+- Testing article view
+- Testing search results
+- Testing standard home
 
 The following unit tests were necessary for backend behavior:
 - Testing the method for getting team stats ([See issue][i66])
