@@ -463,7 +463,7 @@ func getImage(w http.ResponseWriter, r *http.Request) {
 		// Set headers
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "*")
 
 		id := r.URL.Query().Get("id") // Access query param
 		result := getImageEncodingById(id)
