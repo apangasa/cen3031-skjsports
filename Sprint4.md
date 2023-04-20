@@ -1,7 +1,9 @@
 # Sprint 4
 
 ## Relevant User Stories
-- **Add frontend user stories**
+- As a reader, I want the ability to view the homepage, so that I can go back to the homepage whenever I please. 
+- As a reader, I want the ability to open articles, so that I can read them.
+- As a reader, I want the ability to search for articles, so that I can find and read them.
 - As a reader, I want to be able to hover over a player’s name and see statistics about that player, so that I can be better informed while reading an article. 
 - As a reader, I want to be able to hover over a team’s name and see statistics about that team, so that I can be better informed while reading an article. 
 - As a reader, I want the ability to comment on articles, so that I can share my thoughts about various articles.
@@ -10,15 +12,15 @@
 - As a writer, I want to be able to edit published articles, so that I can go back and fix any mistakes after publication. 
 - As an administrator, I want to ask potential writers for their email, so that they can sign up as a writer for the blog. 
 
-
 ## Unit Tests
-The following unit tests were necessary for frontend behavior:
-
+The following unit tests were necessary for frontend behavior: 
+- Testing the draft board
 
 The following unit tests were necessary for backend behavior:
 
+
 ## Issues Completed
-On the frontend side,
+On the frontend side, to finish up the project, we had to work on implementing the draft board ([See issue][i95]), adding various writer features ([See issue][i96]), and connecting the frontend and backend ([See issue][i97]). We were successful in completing these issues. The draft board was fully implemented, and the writer features we wanted to add (login, edit, save, publish drafts) were implemented as well. We also had to actually design the blog ([See issue][i73]). This was the final step of our process, as we had to make the website look aesthetically pleasing, and attract potential readers. We were successfully able to do so, and managed to create the product we had envisioned at the start of this project. 
 
 On the backend side,
 
@@ -72,4 +74,8 @@ https://universal-crater-481750.postman.co/workspace/6185c94f-4893-4149-a166-29e
 [i61]:https://github.com/apangasa/cen3031-skjsports/issues/61
 [i63]:https://github.com/apangasa/cen3031-skjsports/issues/63
 [i66]:https://github.com/apangasa/cen3031-skjsports/issues/66
+[i73]:https://github.com/apangasa/cen3031-skjsports/issues/73
+[i95]:https://github.com/apangasa/cen3031-skjsports/issues/95
+[i96]:https://github.com/apangasa/cen3031-skjsports/issues/96
+[i97]:https://github.com/apangasa/cen3031-skjsports/issues/97
 
